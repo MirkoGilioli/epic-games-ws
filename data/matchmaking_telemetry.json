@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": "2026-10-14T15:01:44.142619+00:00",
+    "shard_id": "eu-west-01",
+    "region": "EU",
+    "active_matches": 1420,
+    "matchmaking_latency_ms": 24.5,
+    "packet_loss_pct": 0.2,
+    "player_dropouts": 2,
+    "eos_gateway_status": "HEALTHY"
+  },
+  {
+    "timestamp": "2026-10-14T15:01:44.142619+00:00",
+    "shard_id": "eu-west-02",
+    "region": "EU",
+    "active_matches": 1580,
+    "matchmaking_latency_ms": 26.1,
+    "packet_loss_pct": 0.4,
+    "player_dropouts": 3,
+    "eos_gateway_status": "HEALTHY"
+  },
+  {
+    "timestamp": "2026-10-14T15:01:44.142619+00:00",
+    "shard_id": "eu-west-03",
+    "region": "EU",
+    "active_matches": 2100,
+    "matchmaking_latency_ms": 342.8,
+    "packet_loss_pct": 14.2,
+    "player_dropouts": 185,
+    "eos_gateway_status": "DEGRADED"
+  },
+  {
+    "timestamp": "2026-10-14T14:56:44.142619+00:00",
+    "shard_id": "eu-west-03",
+    "region": "EU",
+    "active_matches": 1950,
+    "matchmaking_latency_ms": 312.0,
+    "packet_loss_pct": 13.8,
+    "player_dropouts": 160,
+    "eos_gateway_status": "DEGRADED"
+  },
+  {
+    "timestamp": "2026-10-14T15:01:44.142619+00:00",
+    "shard_id": "us-east-11",
+    "region": "NA-EAST",
+    "active_matches": 2300,
+    "matchmaking_latency_ms": 19.8,
+    "packet_loss_pct": 0.1,
+    "player_dropouts": 1,
+    "eos_gateway_status": "HEALTHY"
+  },
+  {
+    "timestamp": "2026-10-14T15:01:44.142619+00:00",
+    "shard_id": "us-east-12",
+    "region": "NA-EAST",
+    "active_matches": 1890,
+    "matchmaking_latency_ms": 85.4,
+    "packet_loss_pct": 4.2,
+    "player_dropouts": 450,
+    "eos_gateway_status": "CRITICAL"
+  }
+]

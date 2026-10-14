@@ -1,0 +1,21 @@
+# Epic Games LiveOps Incident Test Scenarios
+scenarios:
+  - id: scenario-01-eu-packet-loss
+    title: "Fortnite Chapter Launch: EU-West Matchmaking Congestion"
+    severity: "P1"
+    prompt: "@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation."
+    expected_findings:
+      shard: "eu-west-03"
+      anomaly: "High packet loss (14.2%) and matchmaking latency spike (340ms)"
+      root_cause: "Subnet congestion on EOS routing gateway cluster coupled with memory fragmentation in UE5 NetDriver"
+      recommended_action: "Roll back EOS network routing rule v30.10-patch2 or drain shard eu-west-03"
+
+  - id: scenario-02-us-east-crash-loop
+    title: "US-East Game Server Shard Crash Loop"
+    severity: "P1"
+    prompt: "@Titan-LiveOps Server cluster us-east-12 reported 450 player dropouts in the last 15 minutes. Investigate crash signatures."
+    expected_findings:
+      shard: "us-east-12"
+      anomaly: "Elevated player dropouts (450 disconnects) and server process termination"
+      root_cause: "Null pointer exception in Unreal Engine Chaos Physics Replication (CRASH-UE5-CHAOS-9102)"
+      recommended_action: "Hotfix chaos replication flag `p.Chaos.ReplicationSync=0` via LiveOps remote config"

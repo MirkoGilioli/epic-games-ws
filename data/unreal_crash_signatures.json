@@ -1,0 +1,20 @@
+[
+  {
+    "crash_hash": "CRASH-UE5-NET-0842",
+    "build_version": "Release-30.10-CL349201",
+    "engine_module": "NetDriver / SocketSubsystemEOS",
+    "callstack_summary": "UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException",
+    "first_seen_timestamp": "2026-10-14T14:36:44.142721+00:00",
+    "affected_clients": 1240,
+    "related_error_code": "ERR_NET_CONGESTION_EOS"
+  },
+  {
+    "crash_hash": "CRASH-UE5-CHAOS-9102",
+    "build_version": "Release-30.10-CL349201",
+    "engine_module": "ChaosPhysics / Replication",
+    "callstack_summary": "FChaosReplicationSync::SerializePayload -> NullReference at 0x00007FFF0042",
+    "first_seen_timestamp": "2026-10-14T14:21:44.142721+00:00",
+    "affected_clients": 890,
+    "related_error_code": "ERR_UE5_CHAOS_NULLPTR"
+  }
+]

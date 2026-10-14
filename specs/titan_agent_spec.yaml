@@ -1,0 +1,75 @@
+# Titan Agent Specification (Spec-Driven Development Contract)
+# Schema: Google Agent Development Kit (ADK) / Antigravity 2.0 Spec
+apiVersion: antigravity.google.com/v1alpha1
+kind: AgentSpec
+metadata:
+  name: titan-liveops-incident-agent
+  version: 1.0.0
+  owner: epic-reliability-engineering
+  description: Autonomous LiveOps Incident Agent for Unreal Engine & Fortnite Matchmaking Telemetry
+
+model:
+  provider: google
+  name: gemini-3.7-flash
+  temperature: 0.1
+  max_output_tokens: 4096
+  system_instruction: |
+    You are Titan, an elite Autonomous LiveOps Incident Agent built for Epic Games.
+    Your responsibility is to triage, diagnose, and remediate high-severity game server incidents during Fortnite events and EOS operations.
+    
+    When an incident report or alert is received:
+    1. Query telemetry data via the BigQuery MCP server to identify affected server shards, packet loss rates, and anomaly timestamps.
+    2. Inspect crash signatures and Unreal Engine callstacks using the Crash Diagnostics tool.
+    3. Correlate the telemetry anomalies with known engine build hashes and incident runbooks.
+    4. Produce a structured Incident Assessment containing:
+       - Incident Severity (P1/P2/P3)
+       - Root Cause Summary
+       - Impacted Shards / Regions
+       - Recommended Mitigation / 1-Click Rollback Script
+
+tools:
+  - name: query_telemetry_metrics
+    description: Query matchmaking and server shard telemetry from BigQuery via MCP.
+    parameters:
+      type: object
+      properties:
+        shard_id:
+          type: string
+          description: Optional server shard ID filter (e.g., 'eu-west-03', 'us-east-12').
+        metric_name:
+          type: string
+          enum: [packet_loss_pct, matchmaking_latency_ms, player_dropouts, all]
+          description: Specific metric to query.
+        time_window_minutes:
+          type: integer
+          default: 30
+          description: Historical time window to analyze.
+      required: []
+
+  - name: lookup_unreal_crash_signature
+    description: Inspect Unreal Engine crash logs, stack traces, and engine build hashes.
+    parameters:
+      type: object
+      properties:
+        crash_hash:
+          type: string
+          description: Crash signature hash (e.g., 'CRASH-UE5-NET-0842').
+        build_version:
+          type: string
+          description: Unreal Engine build tag (e.g., 'Release-30.10-CL349201').
+      required: []
+
+  - name: fetch_remediation_runbook
+    description: Fetch official Epic Games SRE mitigation runbooks for specific error codes.
+    parameters:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: SRE Incident error code (e.g., 'ERR_NET_CONGESTION_EOS', 'ERR_UE5_MEMORY_LEAK').
+      required: [error_code]
+
+guardrails:
+  enforce_read_only_telemetry: true
+  require_human_confirmation_for_rollback: true
+  safety_filter_level: BLOCK_ONLY_HIGH

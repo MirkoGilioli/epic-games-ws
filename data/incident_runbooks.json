@@ -1,0 +1,16 @@
+[
+  {
+    "error_code": "ERR_NET_CONGESTION_EOS",
+    "title": "EOS Gateway Packet Buffer Overrun Mitigation",
+    "severity": "P1",
+    "remediation_steps": "1. Drain incoming matchmaking queue on affected shard.\n2. Revert EOS routing rule patch to v30.10-baseline.\n3. Cycle NetDriver socket pools.",
+    "rollback_command": "eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03"
+  },
+  {
+    "error_code": "ERR_UE5_CHAOS_NULLPTR",
+    "title": "Unreal Chaos Physics Replication Hotfix",
+    "severity": "P1",
+    "remediation_steps": "1. Disable experimental chaos packet compression in LiveOps remote config.\n2. Restart affected server instances.",
+    "rollback_command": "epic-config-cli set --key=p.Chaos.ReplicationSync --value=0 --broadcast=global"
+  }
+]

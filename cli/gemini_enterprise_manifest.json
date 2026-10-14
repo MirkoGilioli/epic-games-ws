@@ -1,0 +1,34 @@
+{
+  "name": "Titan-LiveOps",
+  "displayName": "Titan - Unreal LiveOps Incident Agent",
+  "version": "1.0.0",
+  "description": "Autonomous LiveOps incident triage and Unreal Engine crash diagnostics for Epic Games SRE and Platform teams.",
+  "publisher": "Epic Games Reliability Engineering",
+  "iconUrl": "https://storage.googleapis.com/epic-workshop-assets/titan_agent_icon.png",
+  "agentEngineConfig": {
+    "targetAgent": "titan-liveops-incident-agent",
+    "project": "${GCP_PROJECT}",
+    "location": "${GCP_REGION}",
+    "model": "gemini-3.7-flash"
+  },
+  "auth": {
+    "type": "OAUTH2_GCP_IAM",
+    "scopes": [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  },
+  "userInvocation": {
+    "mentionTag": "@Titan-LiveOps",
+    "examplePrompts": [
+      "@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss. Run an incident diagnosis and provide mitigation.",
+      "@Titan-LiveOps Server cluster us-east-12 reported 450 player dropouts. Investigate crash signatures."
+    ]
+  },
+  "accessControl": {
+    "allowedGroups": [
+      "epic-liveops-oncall@epicgames.com",
+      "sre-platform@epicgames.com",
+      "unreal-engine-reliability@epicgames.com"
+    ]
+  }
+}
