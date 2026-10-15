@@ -29,7 +29,7 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 ```mermaid
 flowchart LR
     subgraph Setup["1. Phase 1: Setup and Scaffolding"]
-        SetupCLI["uvx google-agents-cli setup"] --> LoadSkills["Skills Loaded in .agents/skills/"]
+        SetupCLI["uvx google-agents-cli setup"] --> LoadSkills["Global Skills Available: /google-agents-cli-*"]
         LoadSkills --> Scaffold["google-agents-cli-scaffold: Interactive Q and A"]
         Scaffold --> InitProj["titan_agent Project Skeleton Initialized"]
     end
@@ -37,7 +37,7 @@ flowchart LR
     subgraph Dev["2. Phase 2: Antigravity 2.0 SDD and Multi-Agent"]
         InitProj --> Spec["specs/titan_agent_spec.yaml"]
         Spec --> Orchestrator["Antigravity 2.0 Primary Agent"]
-        Skills["ADK Skills: google-agents-cli-adk-code"] --> Orchestrator
+        Skills["Global Skills: /google-agents-cli-adk-code"] --> Orchestrator
         Orchestrator --> Plan["Implementation Plan Artifact"]
         Plan -->|Student Reviews and Approves| ApprovedPlan["Approved Implementation Plan"]
         ApprovedPlan -->|Subagent 1: Telemetry| Sub1["Telemetry Tool Builder: BigQuery MCP"]
@@ -68,14 +68,7 @@ flowchart LR
 │   ├── rules/
 │   │   └── epic_engineering_rules.md            # Epic coding & safety rules
 │   └── skills/
-│       ├── google-agents-cli-adk-code/          # ADK API patterns & code recipes
-│       ├── google-agents-cli-deploy/            # Agent Engine & Cloud Run deployment
-│       ├── google-agents-cli-eval/              # Evaluation & benchmarking skills
-│       ├── google-agents-cli-observability/     # Cloud Trace & BigQuery logging
-│       ├── google-agents-cli-publish/           # Gemini Enterprise publishing
-│       ├── google-agents-cli-scaffold/          # Project templates & structure
-│       ├── google-agents-cli-workflow/          # SDD lifecycle & workflow
-│       └── liveops-triage/                      # Epic Games Fortnite & NetDriver triage
+│       └── liveops-triage/                      # Epic Games Fortnite & NetDriver triage skill
 ├── data/                                        # Mock fallback telemetry & crash DB
 ├── mcp_servers/
 │   └── bigquery_mcp.json                        # BigQuery MCP server config
@@ -87,6 +80,9 @@ flowchart LR
 │   └── test_tools.py                            # Tool unit tests
 └── README.md
 ```
+
+> [!NOTE]
+> The `google-agents-cli` skills (`/google-agents-cli-scaffold`, `/google-agents-cli-adk-code`, `/google-agents-cli-workflow`, `/google-agents-cli-deploy`, `/google-agents-cli-publish`) are installed globally in Phase 1 via `uvx google-agents-cli setup` and are accessible across all Antigravity sessions.
 
 ---
 
@@ -111,12 +107,12 @@ flowchart LR
 * The LiveOps Challenge: Triaging packet loss spikes and matchmaking dropouts across Fortnite server shards during live events.
 * Spec-Driven Development: How strict contracts (`specs/titan_agent_spec.yaml`) eliminate hallucinations.
 
-#### 2. Install Google Agents-CLI & Skills (10m)
+#### 2. Install Google Agents-CLI & Global Skills (10m)
 In the Antigravity 2.0 terminal, install and configure the official Google Agents CLI:
 ```bash
 uvx google-agents-cli setup
 ```
-This sets up the CLI tools and verifies the skills under `.agents/skills/`.
+This registers the global skills (`/google-agents-cli-*`) into your Antigravity environment.
 
 #### 3. Interactive Project Scaffolding via Antigravity (5m)
 Instruct Antigravity to scaffold the new agent project:
