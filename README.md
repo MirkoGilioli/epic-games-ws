@@ -154,12 +154,28 @@ Use the main agent for titan_agent/agent.py and config, and launch two parallel 
 
 ---
 
-#### ✅ Step 4: Verify Your Agent Implementation
-Run the test suite in the terminal to verify the generated agent against the spec contracts:
-```bash
-python3 -m unittest discover -s tests -p "test_*.py"
-```
-* **Expected Output:** All tool unit tests (`test_tools.py`) and agent integration tests (`test_agent.py`) pass with 100% success!
+#### ✅ Step 4: Verify Your Agent with `adk run` in Antigravity 2.0
+Now that Antigravity 2.0 has built the agent and tools, test Titan locally using the **Google ADK CLI (`adk run`)**:
+
+1. **Run Titan with an incident prompt:**
+   ```bash
+   adk run titan_agent --prompt "@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation."
+   ```
+
+   *(Alternatively, start an interactive multi-turn ADK session by running `adk run titan_agent`)*
+
+2. **Verify the Agent Output:**
+   * ✅ **Agent Initialization:** Gemini 3.7 Flash boots with the system instruction from `specs/titan_agent_spec.yaml`.
+   * ✅ **Tool Invocations:** Titan calls `query_telemetry_metrics` (BigQuery MCP) to identify the EU-West anomaly and `lookup_unreal_crash_signature` for NetDriver buffer overflow.
+   * ✅ **Structured Incident Report:** Titan returns a `[P1 INCIDENT REPORT]` with affected shards, root cause, and the 1-click rollback command:
+     ```bash
+     eos-admin routing rollback --rule-id=EOS-NET-3010-P2
+     ```
+
+3. **(Optional) Run Unit Tests:**
+   ```bash
+   python3 -m unittest discover -s tests -p "test_*.py"
+   ```
 
 ---
 
