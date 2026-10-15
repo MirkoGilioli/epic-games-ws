@@ -11,9 +11,10 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ 00:00 - 00:15 (15m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
-│ 00:15 - 00:30 (15m) │ Intro to Antigravity & Spec-Driven Development (SDD)  │
+│ 00:15 - 00:30 (15m) │ Phase 1: Antigravity Setup, Skills & Interactive      │
+│                     │         Project Scaffolding (google-agents-cli)       │
 │ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity   │
-│                     │         (Plan Review, Subagents & google-cli Skills)  │
+│                     │         (Plan Review, Subagents & ADK Skills)         │
 │ 01:30 - 01:40 (10m) │ ☕ Bio Break & Lightning Q&A                         │
 │ 01:40 - 02:05 (25m) │ Phase 3: Antigravity CLI — Cloud Deploy & Verification│
 │ 02:05 - 02:40 (35m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
@@ -27,8 +28,15 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 
 ```mermaid
 flowchart LR
-    subgraph Dev["1. Antigravity 2.0 IDE (Human-in-the-Loop SDD)"]
-        Spec["specs/titan_agent_spec.yaml"] --> Orchestrator["Antigravity 2.0 Primary Agent"]
+    subgraph Setup["1. Phase 1: Setup & Scaffolding"]
+        SetupCLI["uvx google-agents-cli setup"] --> LoadSkills[".agents/skills/ Loaded"]
+        LoadSkills --> Scaffold["google-agents-cli-scaffold (Interactive Q&A)"]
+        Scaffold --> InitProj["titan_agent/ Initialized"]
+    end
+
+    subgraph Dev["2. Phase 2: Antigravity 2.0 (Human-in-the-Loop SDD)"]
+        InitProj --> Spec["specs/titan_agent_spec.yaml"]
+        Spec --> Orchestrator["Antigravity 2.0 Primary Agent"]
         Skills[".agents/skills/google-agents-cli-adk-code"] --> Orchestrator
         Orchestrator --> Plan["Implementation Plan Artifact"]
         Plan -->|Student Comments & Approves| ApprovedPlan["Approved Plan"]
@@ -36,16 +44,16 @@ flowchart LR
         ApprovedPlan -->|Spawns Subagent 2 (Parallel Coding)| Sub2["Crash Diagnostics Builder: Unreal Engine"]
         Sub1 --> Code["titan_agent/ (Google ADK & Gemini 3.7 Flash)"]
         Sub2 --> Code
-        Code --> Artifacts["Visual Walkthrough Artifact"]
+        Code --> ADKRun["Local Verification: adk run titan_agent"]
     end
 
-    subgraph Deploy["2. Antigravity CLI & Cloud Deployment"]
-        Artifacts --> CLI["agy deploy --target=agent-engine (.agents/skills/google-agents-cli-deploy)"]
+    subgraph Deploy["3. Phase 3: Cloud Deployment"]
+        ADKRun --> CLI["agy deploy --target=agent-engine (.agents/skills/google-agents-cli-deploy)"]
         CLI --> AgentEngine["Google Cloud Agent Platform (Agent Engine)"]
         CLI --> Verify["agy test (Health & Anomaly Probes)"]
     end
 
-    subgraph Enterprise["3. Gemini Enterprise Activation"]
+    subgraph Enterprise["4. Phase 4: Gemini Enterprise Activation"]
         AgentEngine --> Catalog["Gemini Enterprise Agent Catalog (.agents/skills/google-agents-cli-publish)"]
         Catalog --> LiveOps["LiveOps On-Call Engineer: @Titan-LiveOps"]
     end
@@ -53,7 +61,7 @@ flowchart LR
 
 ---
 
-## 📂 Project Repository Structure (Starting State for Phase 2)
+## 📂 Project Repository Structure
 
 ```
 ├── .agents/
@@ -80,9 +88,6 @@ flowchart LR
 └── README.md
 ```
 
-> [!NOTE]
-> The `titan_agent/` directory is intentionally empty at the start of Phase 2! You will use **Antigravity 2.0**, interactive **Implementation Plan review**, **parallel subagents**, and the imported **`.agents/skills/`** to construct the entire agent package.
-
 ---
 
 ## 🚀 Step-by-Step Hands-On Guide
@@ -100,10 +105,33 @@ flowchart LR
 
 ---
 
-### 🕒 Phase 1: Intro to Antigravity & Spec-Driven Development (00:00 – 00:30)
-1. **The LiveOps Challenge:** Triaging high packet loss and matchmaking dropouts across Fortnite server shards.
-2. **Spec-Driven Development (SDD):** Inspect `specs/titan_agent_spec.yaml`. Notice how strict input/output contracts eliminate hallucinations and enforce safety guardrails.
-3. **Explore Antigravity Skills:** Inspect `.agents/skills/` to see the imported `agents-cli` skills (`google-agents-cli-adk-code`, `google-agents-cli-workflow`, `google-agents-cli-deploy`, `google-agents-cli-publish`).
+### 🕒 Phase 1: Setup, Skills & Interactive Scaffolding (00:00 – 00:30)
+
+#### 1. Mission Briefing (15m)
+* The LiveOps Challenge: Triaging packet loss spikes and matchmaking dropouts across Fortnite server shards during live events.
+* Spec-Driven Development: How strict contracts (`specs/titan_agent_spec.yaml`) eliminate hallucinations.
+
+#### 2. Install Google Agents-CLI & Skills (10m)
+In the Antigravity 2.0 terminal, install and configure the official Google Agents CLI:
+```bash
+uvx google-agents-cli setup
+```
+This sets up the CLI tools and verifies the skills under `.agents/skills/`.
+
+#### 3. Interactive Project Scaffolding via Antigravity (5m)
+Instruct Antigravity to scaffold the new agent project:
+
+```markdown
+Use `@skill:google-agents-cli-scaffold` to initialize our LiveOps incident triage agent project named `titan_agent`.
+```
+
+Antigravity will invoke the scaffold skill and interactively ask you clarifying questions:
+* **Agent Framework:** Google ADK Python (`--agent adk`)
+* **Reasoning Model:** Gemini 3.7 Flash (`gemini-3.7-flash`)
+* **Deployment Target:** Google Cloud Agent Platform / Agent Engine (`agent_runtime`)
+* **Session Type:** In-Memory for local prototyping (`in_memory`)
+
+Antigravity scaffolds the initial `titan_agent/` directory structure.
 
 ---
 
@@ -111,7 +139,7 @@ flowchart LR
 In this phase, you experience **human-in-the-loop plan review**, **Antigravity 2.0 subagent orchestration**, and **Google ADK skills**.
 
 #### 📝 Step 1: Request the Implementation Plan (DO NOT BUILD YET)
-Open the Antigravity 2.0 IDE and enter the initial prompt:
+Open the Antigravity 2.0 chat and enter the initial prompt:
 
 ```markdown
 Activate and use the skills in `.agents/skills/google-agents-cli-adk-code` and `.agents/skills/google-agents-cli-workflow`.
