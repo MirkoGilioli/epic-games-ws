@@ -2,7 +2,7 @@
 
 Welcome to the hands-on technical workshop built for **Epic Games Reliability & Platform Engineers**.
 
-In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, verify, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)** (`google.antigravity`), **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Engine)**.
+In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, verify, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)**, **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Engine)**.
 
 ---
 
@@ -13,7 +13,7 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 │ 00:00 - 00:15 (15m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
 │ 00:15 - 00:30 (15m) │ Intro to Antigravity & Spec-Driven Development (SDD)  │
 │ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity   │
-│                     │         (Plan Review, Subagents & agents-cli Skills)  │
+│                     │         (Plan Review, Subagents & google-cli Skills)  │
 │ 01:30 - 01:40 (10m) │ ☕ Bio Break & Lightning Q&A                         │
 │ 01:40 - 02:05 (25m) │ Phase 3: Antigravity CLI — Cloud Deploy & Verification│
 │ 02:05 - 02:40 (35m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
@@ -29,7 +29,7 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 flowchart LR
     subgraph Dev["1. Antigravity 2.0 IDE (Human-in-the-Loop SDD)"]
         Spec["specs/titan_agent_spec.yaml"] --> Orchestrator["Antigravity 2.0 Primary Agent"]
-        Skills[".agents/skills/ (google-agents-cli-adk-code)"] --> Orchestrator
+        Skills[".agents/skills/google-agents-cli-adk-code"] --> Orchestrator
         Orchestrator --> Plan["Implementation Plan Artifact"]
         Plan -->|Student Comments & Approves| ApprovedPlan["Approved Plan"]
         ApprovedPlan -->|Spawns Subagent 1 (Parallel Coding)| Sub1["Telemetry Tool Builder: BigQuery MCP"]
@@ -40,13 +40,13 @@ flowchart LR
     end
 
     subgraph Deploy["2. Antigravity CLI & Cloud Deployment"]
-        Artifacts --> CLI["agy deploy --target=agent-engine"]
+        Artifacts --> CLI["agy deploy --target=agent-engine (.agents/skills/google-agents-cli-deploy)"]
         CLI --> AgentEngine["Google Cloud Agent Platform (Agent Engine)"]
         CLI --> Verify["agy test (Health & Anomaly Probes)"]
     end
 
     subgraph Enterprise["3. Gemini Enterprise Activation"]
-        AgentEngine --> Catalog["Gemini Enterprise Agent Catalog"]
+        AgentEngine --> Catalog["Gemini Enterprise Agent Catalog (.agents/skills/google-agents-cli-publish)"]
         Catalog --> LiveOps["LiveOps On-Call Engineer: @Titan-LiveOps"]
     end
 ```
@@ -81,7 +81,7 @@ flowchart LR
 ```
 
 > [!NOTE]
-> The `titan_agent/` directory is intentionally empty at the start of Phase 2! You will use **Antigravity 2.0**, interactive **Implementation Plan review**, and **parallel subagents** to construct the entire agent package.
+> The `titan_agent/` directory is intentionally empty at the start of Phase 2! You will use **Antigravity 2.0**, interactive **Implementation Plan review**, **parallel subagents**, and the imported **`.agents/skills/`** to construct the entire agent package.
 
 ---
 
@@ -103,21 +103,22 @@ flowchart LR
 ### 🕒 Phase 1: Intro to Antigravity & Spec-Driven Development (00:00 – 00:30)
 1. **The LiveOps Challenge:** Triaging high packet loss and matchmaking dropouts across Fortnite server shards.
 2. **Spec-Driven Development (SDD):** Inspect `specs/titan_agent_spec.yaml`. Notice how strict input/output contracts eliminate hallucinations and enforce safety guardrails.
-3. **Explore Antigravity Skills:** Inspect `.agents/skills/` to see the imported `agents-cli` skills that equip Antigravity with Google ADK patterns, deployment pipelines, and evaluation workflows.
+3. **Explore Antigravity Skills:** Inspect `.agents/skills/` to see the imported `agents-cli` skills (`google-agents-cli-adk-code`, `google-agents-cli-workflow`, `google-agents-cli-deploy`, `google-agents-cli-publish`).
 
 ---
 
-### 🕒 Phase 2: Hands-on Lab: Build Titan with Antigravity 2.0 (00:30 – 01:30)
-In this phase, you experience **human-in-the-loop plan review** and **Antigravity 2.0 subagent orchestration**.
+### 🕒 Phase 2: Hands-on Lab: Build Titan with Antigravity 2.0 & ADK Skills (00:30 – 01:30)
+In this phase, you experience **human-in-the-loop plan review**, **Antigravity 2.0 subagent orchestration**, and **Google ADK skills**.
 
 #### 📝 Step 1: Request the Implementation Plan (DO NOT BUILD YET)
 Open the Antigravity 2.0 IDE and enter the initial prompt:
 
 ```markdown
-Read `specs/titan_agent_spec.yaml` and reference `.agents/skills/google-agents-cli-adk-code` and `.agents/skills/google-agents-cli-workflow`.
+Activate and use the skills in `.agents/skills/google-agents-cli-adk-code` and `.agents/skills/google-agents-cli-workflow`.
+Read the spec contract in `specs/titan_agent_spec.yaml`.
 
-Create a comprehensive Implementation Plan artifact for building the Titan LiveOps Agent using Google ADK (`google.antigravity`) with Gemini 3.7 Flash. 
-Do NOT write code or create files yet. Outline the proposed file structure, tool contracts, and subagent delegation strategy, then stop and wait for my review and feedback.
+Create a comprehensive Implementation Plan artifact for building the Titan LiveOps Agent using Google ADK (`google.antigravity` / ADK patterns) with Gemini 3.7 Flash. 
+Do NOT write code or create files yet. Outline the proposed architecture, tool contracts, and subagent delegation strategy, then stop and wait for my review and feedback.
 ```
 
 ---
@@ -131,9 +132,9 @@ When Antigravity generates the **Implementation Plan artifact** (`implementation
 * **On the Crash Diagnostics Section:**
   > *"Make sure the crash parser extracts engine build changelist CL349201 and maps NetDriver buffer overflow crashes directly to runbook `ERR_NET_CONGESTION_EOS`."*
 * **On the Agent Architecture Section:**
-  > *"Use the Google ADK (`google.antigravity` Agent & LocalAgentConfig) and ensure `handle_request()` outputs structured reports with markdown headers, severity tags (`[P1 INCIDENT REPORT]`), and 1-click rollback commands."*
+  > *"Follow ADK patterns from `.agents/skills/google-agents-cli-adk-code` and ensure `handle_request()` outputs structured reports with markdown headers, severity tags (`[P1 INCIDENT REPORT]`), and 1-click rollback commands."*
 * **On the Execution Strategy:**
-  > *"When executing this plan, use TWO specialized parallel subagents: Subagent 1 for `telemetry_tool.py` and Subagent 2 for `crash_diagnostics.py`, while the main agent builds `agent.py` and coordinates testing."*
+  > *"When executing this plan, use TWO specialized parallel subagents: Subagent 1 (`telemetry-tool-builder`) for `telemetry_tool.py` and Subagent 2 (`crash-diagnostics-builder`) for `crash_diagnostics.py`, while the main agent builds `agent.py` and coordinates testing."*
 
 ---
 
@@ -141,12 +142,12 @@ When Antigravity generates the **Implementation Plan artifact** (`implementation
 Once your comments are placed, prompt Antigravity to incorporate the feedback and proceed:
 
 ```markdown
-Review the implementation plan according to my comments and proceed with building the agent.
+Review the implementation plan according to my comments and proceed with building the agent using Google ADK.
 Use the main agent for titan_agent/agent.py and config, and launch two parallel specialized subagents to implement titan_agent/tools/telemetry_tool.py and titan_agent/tools/crash_diagnostics.py.
 ```
 
 ##### ⚡ What Happens Next in Antigravity:
-1. **Primary Agent:** Sets up `titan_agent/config.py` and `titan_agent/requirements.txt`.
+1. **Primary Agent:** Sets up `titan_agent/config.py` and `titan_agent/requirements.txt` using ADK conventions from `.agents/skills/google-agents-cli-adk-code`.
 2. **Subagent 1 (`telemetry-tool-builder`):** Codes and verifies `titan_agent/tools/telemetry_tool.py` with BigQuery MCP integration.
 3. **Subagent 2 (`crash-diagnostics-builder`):** Codes and verifies `titan_agent/tools/crash_diagnostics.py` with Unreal Engine NetDriver signatures.
 4. **Primary Agent:** Assembles `titan_agent/agent.py` with Google ADK, runs verification, and generates an interactive **Walkthrough Artifact**.
@@ -164,6 +165,7 @@ python3 -m unittest discover -s tests -p "test_*.py"
 
 ### 🕒 Phase 3: Antigravity CLI (`agy`) — Cloud Deployment & Verification (01:40 – 02:05)
 1. **Deploy to Google Cloud Agent Platform (Agent Engine):**
+   * Antigravity leverages `.agents/skills/google-agents-cli-deploy` to package and deploy Titan:
    ```bash
    bash cli/deploy_agent_engine.sh
    ```
@@ -178,7 +180,9 @@ python3 -m unittest discover -s tests -p "test_*.py"
 ---
 
 ### 🕒 Phase 4: Gemini Enterprise Integration & Publishing (02:05 – 02:40)
-1. **Register the Agent:** Inspect `cli/gemini_enterprise_manifest.json` and publish Titan into the **Gemini Enterprise Agent Catalog**.
+1. **Register the Agent:**
+   * Antigravity leverages `.agents/skills/google-agents-cli-publish` to register Titan into the **Gemini Enterprise Agent Catalog**:
+   * Inspect `cli/gemini_enterprise_manifest.json`.
 2. **Live Incident Interaction:**
    * In Gemini Enterprise chat, mention `@Titan-LiveOps`:
    > *"@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation."*
@@ -200,7 +204,7 @@ python3 -m unittest discover -s tests -p "test_*.py"
 | Feature | Antigravity 2.0 (IDE / GUI) | Antigravity CLI (`agy` / Terminal) |
 | :--- | :--- | :--- |
 | **Best For** | Exploratory coding, multi-agent orchestration, visual architecture | CI/CD pipelines, Unreal Engine build hooks, batch tasks |
-| **Framework** | Google ADK (`google.antigravity`) | Google ADK (`google.antigravity`) runtime runner |
+| **Framework** | Google ADK (`google.antigravity`) via `.agents/skills/google-agents-cli-adk-code` | Google ADK runtime runner & packaging |
 | **Subagents** | Visual branching and concurrent subagent coordination | Headless execution across background workers |
 | **Skills** | Native `.agents/skills/` automatic discovery & invocation | CLI workflow automation (`agy run`) |
 | **Artifacts** | Interactive Plans, Walkthroughs, Mermaid graphs, Carousels | JSON logs, test reports, structured diffs |
