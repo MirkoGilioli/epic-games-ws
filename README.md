@@ -156,7 +156,7 @@ When Antigravity generates the **Implementation Plan artifact** (`implementation
 * **On the Crash Diagnostics Section:**
   > *"Make sure the crash parser extracts engine build changelist CL349201 and maps NetDriver buffer overflow crashes directly to runbook `ERR_NET_CONGESTION_EOS`."*
 * **On the Agent Architecture Section:**
-  > *"Follow ADK patterns from `.agents/skills/google-agents-cli-adk-code` and ensure `handle_request()` outputs structured reports with markdown headers, severity tags (`[P1 INCIDENT REPORT]`), and 1-click rollback commands."*
+  > *"Follow ADK patterns from `/google-agents-cli-adk-code` and ensure `handle_request()` outputs structured reports with markdown headers, severity tags (`[P1 INCIDENT REPORT]`), and 1-click rollback commands."*
 * **On the Execution Strategy:**
   > *"When executing this plan, use TWO specialized parallel subagents: Subagent 1 (`telemetry-tool-builder`) for `telemetry_tool.py` and Subagent 2 (`crash-diagnostics-builder`) for `crash_diagnostics.py`, while the main agent builds `agent.py` and coordinates testing."*
 
@@ -171,7 +171,7 @@ Use the main agent for titan_agent/agent.py and config, and launch two parallel 
 ```
 
 ##### ⚡ What Happens Next in Antigravity:
-1. **Primary Agent:** Sets up `titan_agent/config.py` and `titan_agent/requirements.txt` using ADK conventions from `.agents/skills/google-agents-cli-adk-code`.
+1. **Primary Agent:** Sets up `titan_agent/config.py` and `titan_agent/requirements.txt` using ADK conventions from `/google-agents-cli-adk-code`.
 2. **Subagent 1 (`telemetry-tool-builder`):** Codes and verifies `titan_agent/tools/telemetry_tool.py` with BigQuery MCP integration.
 3. **Subagent 2 (`crash-diagnostics-builder`):** Codes and verifies `titan_agent/tools/crash_diagnostics.py` with Unreal Engine NetDriver signatures.
 4. **Primary Agent:** Assembles `titan_agent/agent.py` with Google ADK, runs verification, and generates an interactive **Walkthrough Artifact**.
@@ -205,7 +205,7 @@ Now that Antigravity 2.0 has built the agent and tools, test Titan locally using
 
 ### 🕒 Phase 3: Antigravity CLI (`agy`) — Cloud Deployment & Verification (01:40 – 02:05)
 1. **Deploy to Google Cloud Agent Platform (Agent Engine):**
-   * Antigravity leverages `.agents/skills/google-agents-cli-deploy` to package and deploy Titan:
+   * Antigravity leverages `/google-agents-cli-deploy` to package and deploy Titan:
    ```bash
    bash cli/deploy_agent_engine.sh
    ```
@@ -221,7 +221,7 @@ Now that Antigravity 2.0 has built the agent and tools, test Titan locally using
 
 ### 🕒 Phase 4: Gemini Enterprise Integration & Publishing (02:05 – 02:40)
 1. **Register the Agent:**
-   * Antigravity leverages `.agents/skills/google-agents-cli-publish` to register Titan into the **Gemini Enterprise Agent Catalog**:
+   * Antigravity leverages `/google-agents-cli-publish` to register Titan into the **Gemini Enterprise Agent Catalog**:
    * Inspect `cli/gemini_enterprise_manifest.json`.
 2. **Live Incident Interaction:**
    * In Gemini Enterprise chat, mention `@Titan-LiveOps`:
@@ -244,8 +244,8 @@ Now that Antigravity 2.0 has built the agent and tools, test Titan locally using
 | Feature | Antigravity 2.0 (IDE / GUI) | Antigravity CLI (`agy` / Terminal) |
 | :--- | :--- | :--- |
 | **Best For** | Exploratory coding, multi-agent orchestration, visual architecture | CI/CD pipelines, Unreal Engine build hooks, batch tasks |
-| **Framework** | Google ADK (`google.antigravity`) via `.agents/skills/google-agents-cli-adk-code` | Google ADK runtime runner & packaging |
+| **Framework** | Google ADK (`google.antigravity`) via `/google-agents-cli-adk-code` | Google ADK runtime runner & packaging |
 | **Subagents** | Visual branching and concurrent subagent coordination | Headless execution across background workers |
-| **Skills** | Native `.agents/skills/` automatic discovery & invocation | CLI workflow automation (`agy run`) |
+| **Skills** | Global `/google-agents-cli-*` and project `.agents/skills/` | CLI workflow automation (`agy run`) |
 | **Artifacts** | Interactive Plans, Walkthroughs, Mermaid graphs, Carousels | JSON logs, test reports, structured diffs |
 | **Operations** | Spec authoring and human-in-the-loop review | Packaging (`agy deploy`) & automated health verification (`agy test`) |
