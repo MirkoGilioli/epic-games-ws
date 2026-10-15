@@ -28,33 +28,33 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 
 ```mermaid
 flowchart LR
-    subgraph Setup["1. Phase 1: Setup & Scaffolding"]
-        SetupCLI["uvx google-agents-cli setup"] --> LoadSkills[".agents/skills/ Loaded"]
-        LoadSkills --> Scaffold["google-agents-cli-scaffold (Interactive Q&A)"]
-        Scaffold --> InitProj["titan_agent/ Initialized"]
+    subgraph Setup["1. Phase 1: Setup and Scaffolding"]
+        SetupCLI["uvx google-agents-cli setup"] --> LoadSkills["Skills Loaded in .agents/skills/"]
+        LoadSkills --> Scaffold["google-agents-cli-scaffold: Interactive Q and A"]
+        Scaffold --> InitProj["titan_agent Project Skeleton Initialized"]
     end
 
-    subgraph Dev["2. Phase 2: Antigravity 2.0 (Human-in-the-Loop SDD)"]
+    subgraph Dev["2. Phase 2: Antigravity 2.0 SDD and Multi-Agent"]
         InitProj --> Spec["specs/titan_agent_spec.yaml"]
         Spec --> Orchestrator["Antigravity 2.0 Primary Agent"]
-        Skills[".agents/skills/google-agents-cli-adk-code"] --> Orchestrator
+        Skills["ADK Skills: google-agents-cli-adk-code"] --> Orchestrator
         Orchestrator --> Plan["Implementation Plan Artifact"]
-        Plan -->|Student Comments & Approves| ApprovedPlan["Approved Plan"]
-        ApprovedPlan -->|Spawns Subagent 1 (Parallel Coding)| Sub1["Telemetry Tool Builder: BigQuery MCP"]
-        ApprovedPlan -->|Spawns Subagent 2 (Parallel Coding)| Sub2["Crash Diagnostics Builder: Unreal Engine"]
-        Sub1 --> Code["titan_agent/ (Google ADK & Gemini 3.7 Flash)"]
+        Plan -->|Student Reviews and Approves| ApprovedPlan["Approved Implementation Plan"]
+        ApprovedPlan -->|Subagent 1: Telemetry| Sub1["Telemetry Tool Builder: BigQuery MCP"]
+        ApprovedPlan -->|Subagent 2: Diagnostics| Sub2["Crash Diagnostics Builder: Unreal Engine"]
+        Sub1 --> Code["titan_agent Core: Google ADK and Gemini 3.7 Flash"]
         Sub2 --> Code
         Code --> ADKRun["Local Verification: adk run titan_agent"]
     end
 
-    subgraph Deploy["3. Phase 3: Cloud Deployment"]
-        ADKRun --> CLI["agy deploy --target=agent-engine (.agents/skills/google-agents-cli-deploy)"]
-        CLI --> AgentEngine["Google Cloud Agent Platform (Agent Engine)"]
-        CLI --> Verify["agy test (Health & Anomaly Probes)"]
+    subgraph Deploy["3. Phase 3: Cloud Deployment and Verification"]
+        ADKRun --> CLI["agy deploy: Google Cloud Agent Engine"]
+        CLI --> AgentEngine["Google Cloud Agent Platform: Agent Engine"]
+        CLI --> Verify["agy test: Health and Anomaly Probes"]
     end
 
     subgraph Enterprise["4. Phase 4: Gemini Enterprise Activation"]
-        AgentEngine --> Catalog["Gemini Enterprise Agent Catalog (.agents/skills/google-agents-cli-publish)"]
+        AgentEngine --> Catalog["Gemini Enterprise Agent Catalog"]
         Catalog --> LiveOps["LiveOps On-Call Engineer: @Titan-LiveOps"]
     end
 ```
