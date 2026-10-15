@@ -2,7 +2,7 @@
 
 Welcome to the hands-on technical workshop built for **Epic Games Reliability & Platform Engineers**.
 
-In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, verify, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)**, **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Engine)**.
+In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, verify, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)** (`google.antigravity`), **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Engine)**.
 
 ---
 
@@ -12,7 +12,7 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ 00:00 - 00:15 (15m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
 │ 00:15 - 00:30 (15m) │ Intro to Antigravity & Spec-Driven Development (SDD)  │
-│ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity 2.0│
+│ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Google ADK    │
 │                     │         (Parallel Subagents, BQ MCP, Rich Artifacts)  │
 │ 01:30 - 01:40 (10m) │ ☕ Bio Break & Lightning Q&A                         │
 │ 01:40 - 02:05 (25m) │ Phase 3: Antigravity CLI — Cloud Deploy & Verification│
@@ -31,7 +31,7 @@ flowchart LR
         Spec["specs/titan_agent_spec.yaml"] --> Orchestrator["Antigravity 2.0 Primary Agent"]
         Orchestrator -->|Spawns Subagent 1 (Parallel Coding)| Sub1["Telemetry Tool Builder: BigQuery MCP"]
         Orchestrator -->|Spawns Subagent 2 (Parallel Coding)| Sub2["Crash Diagnostics Builder: Unreal Engine"]
-        Sub1 --> Code["ADK Agent Core (Gemini 3.7 Flash)"]
+        Sub1 --> Code["Google ADK Agent Core (google.antigravity)"]
         Sub2 --> Code
         Code --> Artifacts["Implementation Plan & Walkthrough"]
     end
@@ -71,15 +71,15 @@ flowchart LR
 
 ---
 
-### 🕒 Phase 2: Hands-on Lab: Build Titan with Antigravity 2.0 (00:30 – 01:30)
-In this phase, you will **not** write raw boilerplate code by hand. You will orchestrate **Antigravity 2.0** to generate, test, and wire the agent modules from the specification!
+### 🕒 Phase 2: Hands-on Lab: Build Titan with Google ADK in Antigravity 2.0 (00:30 – 01:30)
+In this phase, you will use **Google ADK (`google.antigravity`)** as the agent framework. You will orchestrate **Antigravity 2.0** to generate, test, and wire the agent modules from the specification!
 
 1. **Step 1: Open Antigravity 2.0 IDE** and load the workspace.
 2. **Step 2: Prompt Antigravity 2.0 to orchestrate parallel subagents:**
    > *"Read `specs/titan_agent_spec.yaml`. Spin out two parallel subagents to implement the codebase:
    > 1. Subagent 1 (`telemetry-tool-builder`): Implement `titan_agent/tools/telemetry_tool.py` using BigQuery MCP to query matchmaking metrics and flag anomalies.
    > 2. Subagent 2 (`crash-inspector-builder`): Implement `titan_agent/tools/crash_diagnostics.py` to match Unreal Engine crash signatures and fetch SRE runbooks.
-   > Synthesize their output into `titan_agent/agent.py` and produce an interactive Implementation Plan artifact."*
+   > Synthesize their output into `titan_agent/agent.py` using the Google ADK (`google.antigravity` Agent, LocalAgentConfig) and produce an interactive Implementation Plan artifact."*
 3. **Step 3: Review Antigravity Artifacts:**
    * Inspect the generated **Implementation Plan** and **Walkthrough** in the Antigravity artifact viewer.
 4. **Step 4: Run the test suite to verify your implementation:**
@@ -127,6 +127,7 @@ In this phase, you will **not** write raw boilerplate code by hand. You will orc
 | Feature | Antigravity 2.0 (IDE / GUI) | Antigravity CLI (`agy` / Terminal) |
 | :--- | :--- | :--- |
 | **Best For** | Exploratory coding, multi-agent orchestration, visual architecture | CI/CD pipelines, Unreal Engine build hooks, batch tasks |
+| **Framework** | Google ADK (`google.antigravity`) | Google ADK (`google.antigravity`) runtime runner |
 | **Subagents** | Visual branching and concurrent subagent coordination | Headless execution across background workers |
 | **Artifacts** | Interactive Plans, Walkthroughs, Mermaid graphs, Carousels | JSON logs, test reports, structured diffs |
 | **Operations** | Spec authoring and human-in-the-loop review | Packaging (`agy deploy`) & automated health verification (`agy test`) |

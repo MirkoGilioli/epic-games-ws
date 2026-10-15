@@ -1,11 +1,12 @@
 # Titan Agent Specification (Spec-Driven Development Contract)
-# Schema: Google Agent Development Kit (ADK) / Antigravity 2.0 Spec
+# Framework: Google Agent Development Kit (ADK) / Google Antigravity SDK (`google.antigravity`)
 apiVersion: antigravity.google.com/v1alpha1
 kind: AgentSpec
 metadata:
   name: titan-liveops-incident-agent
   version: 1.0.0
   owner: epic-reliability-engineering
+  framework: google-adk
   description: Autonomous LiveOps Incident Agent for Unreal Engine & Fortnite Matchmaking Telemetry
 
 model:
