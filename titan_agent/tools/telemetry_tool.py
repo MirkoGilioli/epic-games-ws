@@ -1,10 +1,18 @@
 """
-BigQuery MCP Telemetry Tool for Titan LiveOps Agent
-Queries shard health, packet loss, and latency metrics via BigQuery MCP protocol.
+BigQuery MCP Telemetry Tool for Titan LiveOps Agent (STUDENT STARTER TEMPLATE)
+=============================================================================
+Phase 2 Lab Task: Use Antigravity 2.0 to implement this tool based on specs/titan_agent_spec.yaml.
+
+Antigravity 2.0 Prompt Guide (Subagent 1 - Telemetry Tool Builder):
+------------------------------------------------------------------
+"Inspect specs/titan_agent_spec.yaml and mcp_servers/bigquery_mcp.json.
+ Implement query_telemetry_metrics in titan_agent/tools/telemetry_tool.py to:
+ 1. Query matchmaking telemetry from BigQuery (or data/matchmaking_telemetry.json for local mock).
+ 2. Filter by shard_id if provided.
+ 3. Flag anomalies where packet_loss_pct > 5% or latency > 100ms.
+ Return a structured dictionary conforming to the spec."
 """
 
-import json
-import os
 from typing import Dict, Any, Optional
 
 def query_telemetry_metrics(
@@ -13,68 +21,18 @@ def query_telemetry_metrics(
     time_window_minutes: int = 30
 ) -> Dict[str, Any]:
     """
-    Queries matchmaking and server shard telemetry from BigQuery.
+    Queries matchmaking and server shard telemetry from BigQuery via MCP.
     
     Args:
-        shard_id: Server shard identifier (e.g., 'eu-west-03').
-        metric_name: Specific metric ('packet_loss_pct', 'matchmaking_latency_ms', 'player_dropouts', 'all').
-        time_window_minutes: Analysis time window in minutes.
+        shard_id: Optional server shard filter (e.g. 'eu-west-03').
+        metric_name: Metric to filter ('packet_loss_pct', 'matchmaking_latency_ms', etc.).
+        time_window_minutes: Time window in minutes.
         
     Returns:
-        Structured telemetry metrics and detected anomaly flags.
+        Dict containing query status, records, and detected anomalies.
     """
-    mock_file = "data/matchmaking_telemetry.json"
-    
-    # Check if local mock file exists (Lab environment fallback)
-    if os.path.exists(mock_file):
-        with open(mock_file, "r") as f:
-            records = json.load(f)
-    else:
-        # Fallback inline dataset
-        records = [
-            {
-                "timestamp": "2026-10-14T15:00:00Z",
-                "shard_id": "eu-west-03",
-                "region": "EU",
-                "active_matches": 2100,
-                "matchmaking_latency_ms": 342.8,
-                "packet_loss_pct": 14.2,
-                "player_dropouts": 185,
-                "eos_gateway_status": "DEGRADED"
-            },
-            {
-                "timestamp": "2026-10-14T15:00:00Z",
-                "shard_id": "eu-west-01",
-                "region": "EU",
-                "active_matches": 1420,
-                "matchmaking_latency_ms": 24.5,
-                "packet_loss_pct": 0.2,
-                "player_dropouts": 2,
-                "eos_gateway_status": "HEALTHY"
-            }
-        ]
-
-    # Filter by shard_id if requested
-    filtered = records
-    if shard_id:
-        filtered = [r for r in records if shard_id.lower() in r.get("shard_id", "").lower()]
-
-    anomalies = []
-    for r in filtered:
-        if r.get("packet_loss_pct", 0) > 5.0 or r.get("matchmaking_latency_ms", 0) > 100.0 or r.get("player_dropouts", 0) > 100:
-            anomalies.append({
-                "shard_id": r.get("shard_id"),
-                "status": r.get("eos_gateway_status"),
-                "packet_loss_pct": r.get("packet_loss_pct"),
-                "latency_ms": r.get("matchmaking_latency_ms"),
-                "dropouts": r.get("player_dropouts"),
-                "severity": "CRITICAL" if r.get("packet_loss_pct", 0) > 10.0 else "WARNING"
-            })
-
-    return {
-        "status": "success",
-        "time_window_minutes": time_window_minutes,
-        "total_shards_evaluated": len(filtered),
-        "records": filtered,
-        "anomalies_detected": anomalies
-    }
+    # TODO [Phase 2]: Implement this function using Antigravity 2.0
+    raise NotImplementedError(
+        "query_telemetry_metrics is not implemented yet. "
+        "Use Antigravity 2.0 Subagent 1 to generate this implementation from specs/titan_agent_spec.yaml!"
+    )

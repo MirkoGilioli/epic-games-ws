@@ -12,8 +12,8 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ 00:00 - 00:15 (15m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
 │ 00:15 - 00:30 (15m) │ Intro to Antigravity & Spec-Driven Development (SDD)  │
-│ 00:30 - 01:30 (60m) │ Phase 2: Antigravity 2.0 Mastery & Building with ADK  │
-│                     │         (2 Parallel Subagents, BQ MCP, Rich Artifacts)│
+│ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity 2.0│
+│                     │         (Parallel Subagents, BQ MCP, Rich Artifacts)  │
 │ 01:30 - 01:40 (10m) │ ☕ Bio Break & Lightning Q&A                         │
 │ 01:40 - 02:05 (25m) │ Phase 3: Antigravity CLI — Cloud Deploy & Verification│
 │ 02:05 - 02:40 (35m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
@@ -50,15 +50,15 @@ flowchart LR
 
 ---
 
-## 🚀 Step-by-Step Workshop Guide
+## 🚀 Step-by-Step Hands-On Guide
 
 ### 📋 Prerequisites & Quickstart
-1. Clone this repository and configure your GCP environment:
+1. Ensure your environment variables are configured:
    ```bash
    export GCP_PROJECT="your-epic-gcp-project"
    export GCP_REGION="us-central1"
    ```
-2. Populate dummy BigQuery telemetry tables (or local mock JSON files):
+2. Populate the dummy BigQuery telemetry tables (or local mock JSON files):
    ```bash
    python3 scripts/seed_bigquery_telemetry.py
    ```
@@ -71,15 +71,21 @@ flowchart LR
 
 ---
 
-### 🕒 Phase 2: Antigravity 2.0 IDE Mastery & Google ADK (00:30 – 01:30)
-1. **Parallel Subagents Showcase:**
-   * Watch Antigravity 2.0 spin out two concurrent subagents:
-     * **Subagent 1 (`telemetry-tool-builder`):** Implements `titan_agent/tools/telemetry_tool.py` using the **BigQuery MCP Server**.
-     * **Subagent 2 (`unreal-diagnostics-builder`):** Implements `titan_agent/tools/crash_diagnostics.py` to parse Unreal Engine crash signatures (`CRASH-UE5-NET-0842`) and match SRE runbooks.
-2. **Google ADK & Gemini 3.7 Flash:**
-   * Examine `titan_agent/agent.py` to see tool binding, reasoning loops, and structured response synthesis.
-3. **Artifacts Showcase:**
-   * Open Antigravity artifacts to review step-by-step Implementation Plans, interactive Walkthroughs, and Mermaid diagrams.
+### 🕒 Phase 2: Hands-on Lab: Build Titan with Antigravity 2.0 (00:30 – 01:30)
+In this phase, you will **not** write raw boilerplate code by hand. You will orchestrate **Antigravity 2.0** to generate, test, and wire the agent modules from the specification!
+
+1. **Step 1: Open Antigravity 2.0 IDE** and load the workspace.
+2. **Step 2: Prompt Antigravity 2.0 to orchestrate parallel subagents:**
+   > *"Read `specs/titan_agent_spec.yaml`. Spin out two parallel subagents to implement the codebase:
+   > 1. Subagent 1 (`telemetry-tool-builder`): Implement `titan_agent/tools/telemetry_tool.py` using BigQuery MCP to query matchmaking metrics and flag anomalies.
+   > 2. Subagent 2 (`crash-inspector-builder`): Implement `titan_agent/tools/crash_diagnostics.py` to match Unreal Engine crash signatures and fetch SRE runbooks.
+   > Synthesize their output into `titan_agent/agent.py` and produce an interactive Implementation Plan artifact."*
+3. **Step 3: Review Antigravity Artifacts:**
+   * Inspect the generated **Implementation Plan** and **Walkthrough** in the Antigravity artifact viewer.
+4. **Step 4: Run the test suite to verify your implementation:**
+   ```bash
+   python3 -m unittest discover -s tests -p "test_*.py"
+   ```
 
 ---
 
@@ -124,12 +130,3 @@ flowchart LR
 | **Subagents** | Visual branching and concurrent subagent coordination | Headless execution across background workers |
 | **Artifacts** | Interactive Plans, Walkthroughs, Mermaid graphs, Carousels | JSON logs, test reports, structured diffs |
 | **Operations** | Spec authoring and human-in-the-loop review | Packaging (`agy deploy`) & automated health verification (`agy test`) |
-
----
-
-## 🧪 Running Unit & Integration Tests
-
-```bash
-# Run all unit tests for tools and agent reasoning
-python3 -m unittest discover -s tests -p "test_*.py"
-```
