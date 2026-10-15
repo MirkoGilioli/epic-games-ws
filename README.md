@@ -122,7 +122,7 @@ This sets up the CLI tools and verifies the skills under `.agents/skills/`.
 Instruct Antigravity to scaffold the new agent project:
 
 ```markdown
-Use `@skill:google-agents-cli-scaffold` to initialize our LiveOps incident triage agent project named `titan_agent`.
+Use `/google-agents-cli-scaffold` to initialize our LiveOps incident triage agent project named `titan_agent`.
 ```
 
 Antigravity will invoke the scaffold skill and interactively ask you clarifying questions:
@@ -142,7 +142,7 @@ In this phase, you experience **human-in-the-loop plan review**, **Antigravity 2
 Open the Antigravity 2.0 chat and enter the initial prompt:
 
 ```markdown
-Activate and use the skills in `.agents/skills/google-agents-cli-adk-code` and `.agents/skills/google-agents-cli-workflow`.
+Activate `/google-agents-cli-adk-code` and `/google-agents-cli-workflow`.
 Read the spec contract in `specs/titan_agent_spec.yaml`.
 
 Create a comprehensive Implementation Plan artifact for building the Titan LiveOps Agent using Google ADK (`google.antigravity` / ADK patterns) with Gemini 3.7 Flash. 
