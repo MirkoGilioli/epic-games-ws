@@ -143,17 +143,55 @@ def seed_live_bigquery(project_id, dataset_id="epic_liveops"):
         crashes = generate_crash_signatures()
         runbooks = generate_runbooks()
 
-        # Insert telemetry
-        table_telemetry = client.get_table(f"{project_id}.{dataset_id}.matchmaking_telemetry")
-        client.insert_rows_json(table_telemetry, telemetry)
+        # Telemetry Table
+        schema_telemetry = [
+            bigquery.SchemaField("timestamp", "TIMESTAMP"),
+            bigquery.SchemaField("shard_id", "STRING"),
+            bigquery.SchemaField("region", "STRING"),
+            bigquery.SchemaField("active_matches", "INT64"),
+            bigquery.SchemaField("matchmaking_latency_ms", "FLOAT64"),
+            bigquery.SchemaField("packet_loss_pct", "FLOAT64"),
+            bigquery.SchemaField("player_dropouts", "INT64"),
+            bigquery.SchemaField("eos_gateway_status", "STRING"),
+        ]
+        table_telemetry_ref = f"{project_id}.{dataset_id}.matchmaking_telemetry"
+        client.create_table(bigquery.Table(table_telemetry_ref, schema=schema_telemetry), exists_ok=True)
+        table_telemetry = client.get_table(table_telemetry_ref)
+        errors = client.insert_rows_json(table_telemetry, telemetry)
+        if errors:
+            print(f"Errors inserting telemetry: {errors}")
 
-        # Insert crashes
-        table_crashes = client.get_table(f"{project_id}.{dataset_id}.unreal_crash_signatures")
-        client.insert_rows_json(table_crashes, crashes)
+        # Crash Signatures Table
+        schema_crashes = [
+            bigquery.SchemaField("crash_hash", "STRING"),
+            bigquery.SchemaField("build_version", "STRING"),
+            bigquery.SchemaField("engine_module", "STRING"),
+            bigquery.SchemaField("callstack_summary", "STRING"),
+            bigquery.SchemaField("first_seen_timestamp", "TIMESTAMP"),
+            bigquery.SchemaField("affected_clients", "INT64"),
+            bigquery.SchemaField("related_error_code", "STRING"),
+        ]
+        table_crashes_ref = f"{project_id}.{dataset_id}.unreal_crash_signatures"
+        client.create_table(bigquery.Table(table_crashes_ref, schema=schema_crashes), exists_ok=True)
+        table_crashes = client.get_table(table_crashes_ref)
+        errors = client.insert_rows_json(table_crashes, crashes)
+        if errors:
+            print(f"Errors inserting crashes: {errors}")
 
-        # Insert runbooks
-        table_runbooks = client.get_table(f"{project_id}.{dataset_id}.incident_runbooks")
-        client.insert_rows_json(table_runbooks, runbooks)
+        # Incident Runbooks Table
+        schema_runbooks = [
+            bigquery.SchemaField("error_code", "STRING"),
+            bigquery.SchemaField("title", "STRING"),
+            bigquery.SchemaField("severity", "STRING"),
+            bigquery.SchemaField("remediation_steps", "STRING"),
+            bigquery.SchemaField("rollback_command", "STRING"),
+        ]
+        table_runbooks_ref = f"{project_id}.{dataset_id}.incident_runbooks"
+        client.create_table(bigquery.Table(table_runbooks_ref, schema=schema_runbooks), exists_ok=True)
+        table_runbooks = client.get_table(table_runbooks_ref)
+        errors = client.insert_rows_json(table_runbooks, runbooks)
+        if errors:
+            print(f"Errors inserting runbooks: {errors}")
 
         print(f"🚀 Successfully seeded BigQuery dataset `{project_id}.{dataset_id}`!")
     except Exception as e:

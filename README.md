@@ -1,8 +1,8 @@
-# 🎮 Operation Zero Downtime: Spec-Driven Agent Engineering with Antigravity 2.0 & Google Cloud
+# 🎮 Operation Zero Downtime: Spec-Driven Agent Engineering with Antigravity 2.0 & Google Agents CLI
 
 Welcome to the hands-on technical workshop built for **Epic Games Reliability & Platform Engineers**.
 
-In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, verify, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)**, **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Engine)**.
+In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, evaluate, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)**, **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Runtime)**.
 
 ---
 
@@ -11,14 +11,15 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ 00:00 - 00:15 (15m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
-│ 00:15 - 00:30 (15m) │ Intro to Antigravity & Spec-Driven Development (SDD)  │
-│ 00:30 - 01:30 (60m) │ Phase 2: Antigravity 2.0 Mastery & Building with ADK  │
-│                     │         (2 Parallel Subagents, BQ MCP, Rich Artifacts)│
+│ 00:15 - 00:30 (15m) │ Phase 1: Environment Setup & Prototype Creation       │
+│                     │         (agents-cli create & install)                 │
+│ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity   │
+│                     │         (Plan Review, Subagents, Tests & Eval)        │
 │ 01:30 - 01:40 (10m) │ ☕ Bio Break & Lightning Q&A                         │
-│ 01:40 - 02:05 (25m) │ Phase 3: Antigravity CLI — Cloud Deploy & Verification│
+│ 01:40 - 02:05 (25m) │ Phase 3: Cloud Deployment to Agent Runtime            │
 │ 02:05 - 02:40 (35m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
-│ 02:40 - 03:00 (20m) │ Phase 5: War Game Challenge, AGY vs CLI & Wrap-up     │
-└─────────────────────────────────────────────────────────────────────────────┘
+│ 02:40 - 03:00 (20m) │ Phase 5: War Game Challenge & Wrap-up                 │
+│─────────────────────────────────────────────────────────────────────────────│
 ```
 
 ---
@@ -26,81 +27,251 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 ## 🏗️ Architecture Overview
 
 ```mermaid
-flowchart LR
-    subgraph Dev["1. Antigravity 2.0 IDE (Spec-Driven Dev)"]
-        Spec["specs/titan_agent_spec.yaml"] --> Orchestrator["Antigravity 2.0 Primary Agent"]
-        Orchestrator -->|Spawns Subagent 1 (Parallel Coding)| Sub1["Telemetry Tool Builder: BigQuery MCP"]
-        Orchestrator -->|Spawns Subagent 2 (Parallel Coding)| Sub2["Crash Diagnostics Builder: Unreal Engine"]
-        Sub1 --> Code["ADK Agent Core (Gemini 3.7 Flash)"]
-        Sub2 --> Code
-        Code --> Artifacts["Implementation Plan & Walkthrough"]
+flowchart TD
+    subgraph P1["1. Phase 1: Setup & Prototype Scaffolding (Terminal)"]
+        SetupCLI["uvx google-agents-cli setup"] --> CreateCmd["agents-cli create titan_agent --prototype --yes"]
+        CreateCmd --> InstallDeps["cd titan_agent && agents-cli install"]
+        InstallDeps --> InitProj["titan_agent Skeleton Created (app/, tests/)"]
     end
 
-    subgraph Deploy["2. Antigravity CLI & Cloud Deployment"]
-        Artifacts --> CLI["agy deploy --target=agent-engine"]
-        CLI --> AgentEngine["Google Cloud Agent Platform (Agent Engine)"]
-        CLI --> Verify["agy test (Health & Anomaly Probes)"]
+    subgraph P2["2. Phase 2: Spec-Driven Plan, Multi-Agent Build & Eval"]
+        InitProj --> Spec["specs/titan_agent_spec.yaml"]
+        Spec --> Orchestrator["Antigravity 2.0 Primary Agent"]
+        Skills["Global Skills: /google-agents-cli-adk-code"] --> Orchestrator
+        Orchestrator --> Plan["Implementation Plan Artifact (STOP GATE)"]
+        Plan -->|Student Reviews & Comments| ApprovedPlan["Approved Plan + Evaluation Specs"]
+        
+        ApprovedPlan -->|Subagent 1: Telemetry| Sub1["Telemetry Tool & Tests<br/>• app/tools/telemetry_tool.py<br/>• tests/test_telemetry_tool.py"]
+        ApprovedPlan -->|Subagent 2: Diagnostics| Sub2["Crash Diagnostics Tool & Tests<br/>• app/tools/crash_diagnostics.py<br/>• tests/test_crash_diagnostics.py"]
+        ApprovedPlan -->|Main Agent: ADK & Eval| MainAgent["ADK Core & Evaluation Suite<br/>• app/agent.py (Gemini 3.7 Flash)<br/>• eval/evalset.jsonl & trajectory scoring"]
+        
+        Sub1 --> LocalVerify["Local Verification"]
+        Sub2 --> LocalVerify
+        MainAgent --> LocalVerify
+        LocalVerify --> RunCLI["agents-cli run & agents-cli eval run"]
     end
 
-    subgraph Enterprise["3. Gemini Enterprise Activation"]
-        AgentEngine --> Catalog["Gemini Enterprise Agent Catalog"]
+    subgraph P3["3. Phase 3: Cloud Deployment to Agent Runtime"]
+        RunCLI --> Enhance["agents-cli scaffold enhance --deployment-target agent_runtime"]
+        Enhance --> DeployCloud["Deploy to Google Cloud Agent Runtime"]
+        DeployCloud --> CloudVerify["Verify Live Agent Runtime Endpoint"]
+    end
+
+    subgraph P4["4. Phase 4: Gemini Enterprise Publishing"]
+        CloudVerify --> Publish["agents-cli publish gemini"]
+        Publish --> Catalog["Gemini Enterprise Agent Catalog"]
         Catalog --> LiveOps["LiveOps On-Call Engineer: @Titan-LiveOps"]
     end
+
+    P1 --> P2 --> P3 --> P4
 ```
 
 ---
 
-## 🚀 Step-by-Step Workshop Guide
+## 📂 Project Repository Structure
+
+```
+├── .agents/
+│   ├── rules/
+│   │   └── epic_engineering_rules.md            # Epic coding & safety rules
+│   └── skills/
+│       └── liveops-triage/                      # Epic Games Fortnite & NetDriver triage skill
+├── data/                                        # Mock fallback telemetry & crash DB
+├── mcp_servers/
+│   └── bigquery_mcp.json                        # BigQuery MCP server config
+├── specs/
+│   ├── incident_scenarios.yaml                  # Incident test cases (EU-West / US-East)
+│   └── titan_agent_spec.yaml                    # SDD Contract (ADK Agent & Tool Schemas)
+├── titan_agent/                                 # Created in Phase 1 via agents-cli create
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── agent.py                             # ADK Agent Core (Main Agent)
+│   │   └── tools/
+│   │       ├── telemetry_tool.py                # Telemetry Tool (Subagent 1)
+│   │       └── crash_diagnostics.py             # Crash Diagnostics Tool (Subagent 2)
+│   ├── tests/
+│   │   ├── test_telemetry_tool.py               # Telemetry Tool Unit Tests (Subagent 1)
+│   │   └── test_crash_diagnostics.py            # Crash Diagnostics Unit Tests (Subagent 2)
+│   ├── eval/
+│   │   └── evalset.jsonl                        # Evaluation Dataset & Trajectories (Main Agent)
+│   ├── pyproject.toml
+│   └── .env
+└── README.md
+```
+
+> [!NOTE]
+> The `google-agents-cli` skills (`/google-agents-cli-scaffold`, `/google-agents-cli-adk-code`, `/google-agents-cli-workflow`, `/google-agents-cli-eval`, `/google-agents-cli-deploy`, `/google-agents-cli-publish`) are installed globally via `uvx google-agents-cli setup` and accessible across all Antigravity sessions.
+
+---
+
+## 🚀 Step-by-Step Hands-On Guide
 
 ### 📋 Prerequisites & Quickstart
-1. Clone this repository and configure your GCP environment:
-   ```bash
-   export GCP_PROJECT="your-epic-gcp-project"
-   export GCP_REGION="us-central1"
-   ```
-2. Populate dummy BigQuery telemetry tables (or local mock JSON files):
-   ```bash
-   python3 scripts/seed_bigquery_telemetry.py
-   ```
+
+#### Required Toolchain
+Before beginning the workshop, ensure the following tools are installed on your workstation:
+* **Python 3.11+** (`python3 --version`)
+* **uv** (`uv --version` or install via `curl -LsSf https://astral.sh/uv/install.sh | sh`)
+* **Node.js 18+** (`node --version`)
+* **Google Cloud SDK** (`gcloud --version`)
+* **Terraform 1.5+** (`terraform --version`)
+
+#### Cloud Authentication & Environment
+Ensure you are authenticated to your Google Cloud Project with Application Default Credentials (ADC):
+```bash
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project your-epic-gcp-project
+
+export GCP_PROJECT="your-epic-gcp-project"
+export GCP_REGION="us-central1"
+```
+
+#### Seed Telemetry & Incident Data
+Populate the BigQuery telemetry datasets (use `--live` for real BigQuery tables, or omit for local mock JSON files):
+```bash
+# Live BigQuery dataset seeding (requires GCP credentials):
+python3 scripts/seed_bigquery_telemetry.py --live
+
+# Or local offline mock data:
+python3 scripts/seed_bigquery_telemetry.py
+```
 
 ---
 
-### 🕒 Phase 1: Intro to Antigravity & Spec-Driven Development (00:00 – 00:30)
-1. **The LiveOps Challenge:** Triaging high packet loss and matchmaking dropouts across Fortnite server shards.
-2. **Spec-Driven Development (SDD):** Inspect `specs/titan_agent_spec.yaml`. Notice how strict input/output contracts eliminate hallucinations and enforce safety guardrails.
+### 🕒 Phase 1: Environment Setup & Prototype Creation (00:00 – 00:30)
+
+#### 1. Mission Briefing (15m)
+* **The LiveOps Challenge:** Triaging packet loss spikes and matchmaking dropouts across Fortnite server shards during live events.
+* **Spec-Driven Development:** Introducing `specs/titan_agent_spec.yaml` as the formal behavioral contract.
+
+#### 2. Manual Terminal Setup & Prototype Creation (15m)
+Open the Antigravity 2.0 Terminal and run:
+
+1. **Install Google Agents CLI:**
+   ```bash
+   uvx google-agents-cli setup
+   ```
+2. **Create the Prototype Project:**
+   ```bash
+   agents-cli create titan_agent --prototype --yes
+   ```
+3. **Install Project Dependencies:**
+   ```bash
+   cd titan_agent
+   agents-cli install
+   ```
+4. **Explore the Scaffolded Structure:**
+   Inspect `titan_agent/app/agent.py` and `titan_agent/tests/` to understand the standard ADK project layout.
 
 ---
 
-### 🕒 Phase 2: Antigravity 2.0 IDE Mastery & Google ADK (00:30 – 01:30)
-1. **Parallel Subagents Showcase:**
-   * Watch Antigravity 2.0 spin out two concurrent subagents:
-     * **Subagent 1 (`telemetry-tool-builder`):** Implements `titan_agent/tools/telemetry_tool.py` using the **BigQuery MCP Server**.
-     * **Subagent 2 (`unreal-diagnostics-builder`):** Implements `titan_agent/tools/crash_diagnostics.py` to parse Unreal Engine crash signatures (`CRASH-UE5-NET-0842`) and match SRE runbooks.
-2. **Google ADK & Gemini 3.7 Flash:**
-   * Examine `titan_agent/agent.py` to see tool binding, reasoning loops, and structured response synthesis.
-3. **Artifacts Showcase:**
-   * Open Antigravity artifacts to review step-by-step Implementation Plans, interactive Walkthroughs, and Mermaid diagrams.
+### 🕒 Phase 2: Hands-on Lab: Build Titan with Antigravity 2.0 & ADK Skills (00:30 – 01:30)
+In this phase, you experience **human-in-the-loop plan review**, **Antigravity 2.0 subagent orchestration**, **tool testing**, and **evaluation suites**.
+
+#### 📝 Step 1: Request the Implementation Plan (DO NOT BUILD YET)
+Open the Antigravity 2.0 chat and enter the initial prompt:
+
+```markdown
+Activate `/google-agents-cli-adk-code` and `/google-agents-cli-workflow`.
+Read the spec contract in `../specs/titan_agent_spec.yaml`.
+
+Create a comprehensive Implementation Plan artifact for developing the Titan LiveOps Agent inside this `titan_agent` project using Google ADK with Gemini 3.7 Flash.
+Plan for:
+- Main Agent: Implements the ADK agent core (`app/agent.py`) and agent evaluation suite (`eval/`).
+- Subagent 1 (Parallel): Implements the telemetry tool (`app/tools/telemetry_tool.py`) with BigQuery MCP integration and unit tests (`tests/test_telemetry_tool.py`).
+- Subagent 2 (Parallel): Implements the crash diagnostics tool (`app/tools/crash_diagnostics.py`) with Unreal Engine symbol parsing and unit tests (`tests/test_crash_diagnostics.py`).
+
+Do NOT write code or create files yet. Outline the architecture, tool contracts, test plan, and subagent delegation strategy, then stop and wait for my review and feedback.
+```
 
 ---
 
-### 🕒 Phase 3: Antigravity CLI (`agy`) — Cloud Deployment & Verification (01:40 – 02:05)
-1. **Deploy to Google Cloud Agent Platform (Agent Engine):**
+#### 🔍 Step 2: Review & Revise the Plan with Inline Comments
+When Antigravity generates the **Implementation Plan artifact** (`implementation_plan.md`), click to view it in the Artifact Panel. Practice adding inline comments to guide the agent:
+
+##### 💡 Example Comments to Add on the Artifact:
+* **On the Telemetry Tool Section:**
+  > *"Ensure we flag shard packet loss > 5% as WARNING and > 10% as CRITICAL anomalies via BigQuery MCP, and include unit tests in `tests/test_telemetry_tool.py`."*
+* **On the Crash Diagnostics Section:**
+  > *"Make sure the crash parser extracts engine build changelist CL349201, maps NetDriver buffer overflow crashes directly to runbook `ERR_NET_CONGESTION_EOS`, and includes unit tests in `tests/test_crash_diagnostics.py`."*
+* **On Evaluation & Testing (Main Agent):**
+  > *"Instruct the Main Agent to build an evaluation dataset (`eval/evalset.jsonl`) that validates tool trajectories (ensuring telemetry metrics are queried before crash diagnostics) and expected `[P1 INCIDENT REPORT]` formats."*
+
+---
+
+#### 🚀 Step 3: Approve the Plan and Trigger Multi-Agent Build
+Once your comments are placed, prompt Antigravity to incorporate the feedback and proceed:
+
+```markdown
+Review the implementation plan according to my comments and proceed with building the agent using `/google-agents-cli-adk-code` and `/google-agents-cli-eval`:
+1. Subagent 1: Implement `app/tools/telemetry_tool.py` and `tests/test_telemetry_tool.py`.
+2. Subagent 2: Implement `app/tools/crash_diagnostics.py` and `tests/test_crash_diagnostics.py`.
+3. Main Agent: Implement `app/agent.py`, configure Gemini 3.7 Flash with both tools, and generate the evaluation dataset and trajectory tests.
+```
+
+##### ⚡ What Happens Next in Antigravity:
+1. **Subagent 1 (`telemetry-tool-builder`):** Codes and verifies `app/tools/telemetry_tool.py` with BigQuery MCP and writes `tests/test_telemetry_tool.py`.
+2. **Subagent 2 (`crash-diagnostics-builder`):** Codes and verifies `app/tools/crash_diagnostics.py` with Unreal Engine NetDriver signatures and writes `tests/test_crash_diagnostics.py`.
+3. **Primary Agent:** Assembles `app/agent.py` with Google ADK, builds the evaluation dataset (`eval/evalset.jsonl`), and verifies the complete agent flow.
+
+---
+
+#### ✅ Step 4: Verify Your Agent with `agents-cli run` and `agents-cli eval run`
+Once Antigravity completes the build, test Titan in the terminal:
+
+1. **Run Titan with an incident prompt:**
    ```bash
-   bash cli/deploy_agent_engine.sh
+   agents-cli run "@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation."
    ```
-2. **Automated Verification Probes (`agy test`):**
+
+2. **Verify the Agent Output:**
+   * ✅ **Agent Reasoning:** Gemini 3.7 Flash boots with the system instruction from `specs/titan_agent_spec.yaml`.
+   * ✅ **Tool Invocations:** Titan calls `query_telemetry_metrics` (BigQuery MCP) to identify the EU-West anomaly and `lookup_unreal_crash_signature` for NetDriver buffer overflow.
+   * ✅ **Structured Incident Report:** Titan returns a `[P1 INCIDENT REPORT]` with affected shards, root cause, and the 1-click rollback command:
+     ```bash
+     eos-admin routing rollback --rule-id=EOS-NET-3010-P2
+     ```
+
+3. **Run the Evaluation Benchmark:**
    ```bash
-   python3 cli/verify_cloud_agent.py
+   agents-cli eval run
    ```
-   * Probe 1: Agent Engine runtime health check.
-   * Probe 2: BigQuery MCP connection probe.
-   * Probe 3: Synthetic EU-West packet loss triage probe.
+   * ✅ **Tool Trajectory Scoring:** Verifies that tool call sequences, arguments, and final remediation plans pass evaluation thresholds.
+
+---
+
+### 🕒 Phase 3: Cloud Deployment to Google Cloud Agent Runtime (01:40 – 02:05)
+
+1. **Enhance Project with Agent Runtime Deployment:**
+   Prompt Antigravity:
+   ```markdown
+   Use `/google-agents-cli-deploy` to enhance this project for Google Cloud Agent Runtime deployment.
+   ```
+   *Antigravity executes:*
+   ```bash
+   agents-cli scaffold enhance --deployment-target agent_runtime
+   ```
+
+2. **Deploy to Google Cloud Agent Runtime:**
+   * Antigravity packages and deploys Titan to Google Cloud Agent Engine / Agent Runtime.
+   * Trainees verify the deployed endpoint with automated cloud health probes.
 
 ---
 
 ### 🕒 Phase 4: Gemini Enterprise Integration & Publishing (02:05 – 02:40)
-1. **Register the Agent:** Inspect `cli/gemini_enterprise_manifest.json` and publish Titan into the **Gemini Enterprise Agent Catalog**.
-2. **Live Incident Interaction:**
+
+1. **Publish the Agent:**
+   Prompt Antigravity:
+   ```markdown
+   Use `/google-agents-cli-publish` to register Titan with Gemini Enterprise.
+   ```
+   *Antigravity executes:*
+   ```bash
+   agents-cli publish gemini
+   ```
+
+2. **Live Incident Interaction in Gemini Enterprise Chat:**
    * In Gemini Enterprise chat, mention `@Titan-LiveOps`:
    > *"@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation."*
    * Titan autonomously queries BigQuery via MCP, correlates the Unreal NetDriver buffer overflow, and returns a 1-click rollback command (`eos-admin routing rollback --rule-id=EOS-NET-3010-P2`).
@@ -111,25 +282,18 @@ flowchart LR
 1. **Live War Game Challenge:**
    * Instructor runs `python3 scripts/simulate_incident.py us-east-12` to inject a live matchmaking outage.
    * Engineers query their `@Titan-LiveOps` agent in Gemini Enterprise to diagnose the root cause and execute the mitigation.
-2. **Antigravity 2.0 vs. Antigravity CLI:**
-   * Review when to use the interactive IDE vs. headless CLI in Epic's engineering workflows.
+2. **Review & Key Takeaways:**
+   * Summary of Spec-Driven Agent Engineering with Google ADK, Antigravity 2.0 multi-agent workflows, and `agents-cli`.
 
 ---
 
-## 🧭 Tooling Comparison: Antigravity 2.0 vs. Antigravity CLI (`agy`)
+## 🧭 Tooling Comparison: Antigravity 2.0 vs. Google Agents CLI (`agents-cli`)
 
-| Feature | Antigravity 2.0 (IDE / GUI) | Antigravity CLI (`agy` / Terminal) |
+| Feature | Antigravity 2.0 (IDE / GUI) | Google Agents CLI (`agents-cli` / Terminal) |
 | :--- | :--- | :--- |
 | **Best For** | Exploratory coding, multi-agent orchestration, visual architecture | CI/CD pipelines, Unreal Engine build hooks, batch tasks |
+| **Framework** | Google ADK via `/google-agents-cli-adk-code` | Google ADK runtime runner & packaging |
 | **Subagents** | Visual branching and concurrent subagent coordination | Headless execution across background workers |
-| **Artifacts** | Interactive Plans, Walkthroughs, Mermaid graphs, Carousels | JSON logs, test reports, structured diffs |
-| **Operations** | Spec authoring and human-in-the-loop review | Packaging (`agy deploy`) & automated health verification (`agy test`) |
+| **Evaluation** | Human-in-the-loop plan review & artifact inspection | Automated regression & trajectory testing (`agents-cli eval run`) |
+| **Operations** | Spec authoring and interactive debugging | Project scaffolding (`agents-cli create`), enhancement (`scaffold enhance`) & publishing (`publish gemini`) |
 
----
-
-## 🧪 Running Unit & Integration Tests
-
-```bash
-# Run all unit tests for tools and agent reasoning
-python3 -m unittest discover -s tests -p "test_*.py"
-```
