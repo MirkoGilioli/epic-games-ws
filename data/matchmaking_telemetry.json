@@ -1,6 +1,6 @@
 [
   {
-    "timestamp": "2026-10-14T16:16:30.774680+00:00",
+    "timestamp": "2026-10-16T04:43:08.031837+00:00",
     "shard_id": "eu-west-01",
     "region": "EU",
     "active_matches": 1420,
@@ -10,7 +10,7 @@
     "eos_gateway_status": "HEALTHY"
   },
   {
-    "timestamp": "2026-10-14T16:16:30.774680+00:00",
+    "timestamp": "2026-10-16T04:43:08.031837+00:00",
     "shard_id": "eu-west-02",
     "region": "EU",
     "active_matches": 1580,
@@ -20,7 +20,7 @@
     "eos_gateway_status": "HEALTHY"
   },
   {
-    "timestamp": "2026-10-14T16:16:30.774680+00:00",
+    "timestamp": "2026-10-16T04:43:08.031837+00:00",
     "shard_id": "eu-west-03",
     "region": "EU",
     "active_matches": 2100,
@@ -30,7 +30,7 @@
     "eos_gateway_status": "DEGRADED"
   },
   {
-    "timestamp": "2026-10-14T16:11:30.774680+00:00",
+    "timestamp": "2026-10-16T04:38:08.031837+00:00",
     "shard_id": "eu-west-03",
     "region": "EU",
     "active_matches": 1950,
@@ -40,7 +40,7 @@
     "eos_gateway_status": "DEGRADED"
   },
   {
-    "timestamp": "2026-10-14T16:16:30.774680+00:00",
+    "timestamp": "2026-10-16T04:43:08.031837+00:00",
     "shard_id": "us-east-11",
     "region": "NA-EAST",
     "active_matches": 2300,
@@ -50,7 +50,7 @@
     "eos_gateway_status": "HEALTHY"
   },
   {
-    "timestamp": "2026-10-14T16:16:30.774680+00:00",
+    "timestamp": "2026-10-16T04:43:08.031837+00:00",
     "shard_id": "us-east-12",
     "region": "NA-EAST",
     "active_matches": 1890,
