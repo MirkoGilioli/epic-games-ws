@@ -114,11 +114,14 @@ uvx google-agents-cli setup
 ```
 This registers the global skills (`/google-agents-cli-*`) into your Antigravity environment.
 
-#### 3. Interactive Project Scaffolding via Antigravity (5m)
-Instruct Antigravity to scaffold the new agent project:
+#### 3. Interactive Requirements & Scaffolding Interview (5m)
+Instruct Antigravity in the chat:
 
 ```markdown
-Use `/google-agents-cli-scaffold` to initialize our LiveOps incident triage agent project named `titan_agent`.
+Activate `/google-agents-cli-scaffold` and `/google-agents-cli-workflow`.
+I want to scaffold a new LiveOps incident triage agent project named `titan_agent`.
+
+Before generating any files or running scaffolding commands, start with the Phase 0 requirements interview. Ask me the key architectural and configuration questions interactively (such as Agent Framework, Reasoning Model, Deployment Target, and Session Type). Do NOT generate any agent code or tool implementations yet.
 ```
 
 Antigravity will invoke the scaffold skill and interactively ask you clarifying questions:
@@ -127,7 +130,7 @@ Antigravity will invoke the scaffold skill and interactively ask you clarifying 
 * **Deployment Target:** Google Cloud Agent Platform / Agent Engine (`agent_runtime`)
 * **Session Type:** In-Memory for local prototyping (`in_memory`)
 
-Antigravity scaffolds the initial `titan_agent/` directory structure.
+Once confirmed, Antigravity sets up the project configuration and directory structure, leaving the agent and tool implementation to be built via Spec-Driven Development in Phase 2.
 
 ---
 
