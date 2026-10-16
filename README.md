@@ -107,15 +107,35 @@ flowchart TD
 ## 🚀 Step-by-Step Hands-On Guide
 
 ### 📋 Prerequisites & Quickstart
-1. Ensure your environment variables are configured:
-   ```bash
-   export GCP_PROJECT="your-epic-gcp-project"
-   export GCP_REGION="us-central1"
-   ```
-2. Populate the dummy BigQuery telemetry tables (or local mock JSON files):
-   ```bash
-   python3 scripts/seed_bigquery_telemetry.py
-   ```
+
+#### Required Toolchain
+Before beginning the workshop, ensure the following tools are installed on your workstation:
+* **Python 3.11+** (`python3 --version`)
+* **uv** (`uv --version` or install via `curl -LsSf https://astral.sh/uv/install.sh | sh`)
+* **Node.js 18+** (`node --version`)
+* **Google Cloud SDK** (`gcloud --version`)
+* **Terraform 1.5+** (`terraform --version`)
+
+#### Cloud Authentication & Environment
+Ensure you are authenticated to your Google Cloud Project with Application Default Credentials (ADC):
+```bash
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project your-epic-gcp-project
+
+export GCP_PROJECT="your-epic-gcp-project"
+export GCP_REGION="us-central1"
+```
+
+#### Seed Telemetry & Incident Data
+Populate the BigQuery telemetry datasets (use `--live` for real BigQuery tables, or omit for local mock JSON files):
+```bash
+# Live BigQuery dataset seeding (requires GCP credentials):
+python3 scripts/seed_bigquery_telemetry.py --live
+
+# Or local offline mock data:
+python3 scripts/seed_bigquery_telemetry.py
+```
 
 ---
 
