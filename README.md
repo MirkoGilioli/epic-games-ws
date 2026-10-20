@@ -189,6 +189,44 @@ gcloud services enable \
   serviceusage.googleapis.com
 ```
 
+#### Required IAM Roles & Permissions
+To build, deploy, execute, and publish Titan across Vertex AI Agent Runtime and Gemini Enterprise, ensure the following IAM roles are granted:
+
+##### 1. Developer / Deployer Identity Roles
+This identity builds the agent, triggers Cloud Build, creates the Reasoning Engine, queries BigQuery, and registers the agent with Gemini Enterprise.
+
+| IAM Role | Role Identifier | Purpose |
+| :--- | :--- | :--- |
+| **Vertex AI Administrator / User** | `roles/aiplatform.admin` (or `roles/aiplatform.user`) | Create, update, list, and query Vertex AI Reasoning Engines (Agent Runtime). |
+| **Discovery Engine Editor** | `roles/discoveryengine.editor` | Register, update, and manage agents in Gemini Enterprise (via `agents-cli publish gemini`). |
+| **BigQuery Job User** | `roles/bigquery.jobUser` | Execute BigQuery queries for telemetry validation and unit tests. |
+| **BigQuery Data Viewer** | `roles/bigquery.dataViewer` | Read access to `epic_liveops` dataset (telemetry, crash signatures, runbooks). |
+| **Cloud Build Editor** | `roles/cloudbuild.builds.editor` | Trigger container builds during `agents-cli deploy`. |
+| **Artifact Registry Writer** | `roles/artifactregistry.writer` | Push packaged agent containers to Artifact Registry. |
+| **Storage Object Admin** | `roles/storage.objectAdmin` | Upload source bundles and deployment metadata to staging GCS buckets. |
+| **Service Account User** | `roles/iam.serviceAccountUser` | Attach and act as the runtime service account during deployment. |
+| **Logs Viewer** | `roles/logging.viewer` | Read `reasoning_engine_stderr` logs for troubleshooting live streaming executions. |
+
+##### 2. Agent Runtime Execution Service Account Roles
+By default, Agent Runtime uses the Compute Engine Default Service Account (`<PROJECT_NUMBER>-compute@developer.gserviceaccount.com`) or a dedicated agent service account.
+
+| IAM Role | Role Identifier | Purpose |
+| :--- | :--- | :--- |
+| **Vertex AI User** | `roles/aiplatform.user` | Invokes `gemini-3.7-flash` model endpoints on Vertex AI. |
+| **BigQuery Data Viewer** | `roles/bigquery.dataViewer` | Reads live tables in `epic_liveops` (`matchmaking_telemetry`, `unreal_crash_signatures`). |
+| **BigQuery Job User** | `roles/bigquery.jobUser` | Runs query jobs inside the BigQuery engine on behalf of the agent. |
+| **Logs Writer** | `roles/logging.logWriter` | Streams agent stdout/stderr and diagnostic trace logs to Cloud Logging. |
+| **Cloud Trace Agent** | `roles/cloudtrace.agent` | Emits ADK OpenTelemetry spans and trajectory traces to Cloud Trace. |
+| **Storage Object Viewer** | `roles/storage.objectViewer` | Reads container code packages and cached artifacts from GCS. |
+
+##### 3. Gemini Enterprise Invoker Roles
+For Gemini Enterprise to invoke the deployed Agent Runtime Reasoning Engine, the Discovery Engine service agent (`service-<PROJECT_NUMBER>@gcp-sa-discoveryengine.iam.gserviceaccount.com`) must have:
+
+| IAM Role | Role Identifier | Purpose |
+| :--- | :--- | :--- |
+| **Vertex AI User** | `roles/aiplatform.user` | Invokes `:streamQuery` on the deployed Reasoning Engine. |
+| **Cloud Run Invoker** | `roles/run.servicesInvoker` | Communicates over Cloud Run A2A endpoints (if applicable). |
+
 #### Seed Telemetry & Incident Data
 Populate the BigQuery telemetry datasets (use `--live` for real BigQuery tables, or omit for local mock JSON files):
 ```bash
