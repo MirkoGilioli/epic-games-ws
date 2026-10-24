@@ -1,5 +1,7 @@
 # 🎮 Operation Zero Downtime: Spec-Driven Agent Engineering with Antigravity 2.0 & Google Agents CLI
 
+![Titan: AI LiveOps Incident Triage Agent](assets/titan_liveops_agent.png)
+
 Welcome to the hands-on technical workshop built for **Epic Games Reliability & Platform Engineers**.
 
 In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, evaluate, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)**, **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Runtime)**.
