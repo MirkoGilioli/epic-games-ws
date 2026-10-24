@@ -374,6 +374,9 @@ Once Antigravity completes the build, test Titan in the terminal:
 
 ### 🕒 Phase 4: Gemini Enterprise Integration & Publishing (02:05 – 02:40)
 
+> [!NOTE]
+> **Prerequisite:** A Gemini Enterprise App (or Search & Conversation App in Discovery Engine) must be created in your GCP project beforehand. `agents-cli publish gemini` registers the ADK agent into an existing Gemini Enterprise instance—it does not create or provision the Gemini Enterprise application itself.
+
 1. **Publish the Agent:**
    Prompt Antigravity:
    ```markdown
