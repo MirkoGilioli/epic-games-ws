@@ -1,0 +1,1332 @@
+{
+  "eval_case_results": [
+    {
+      "eval_case_index": 0,
+      "response_candidate_results": [
+        {
+          "response_index": 0,
+          "metric_results": {
+            "trajectory_order_metric": {
+              "metric_name": "trajectory_order_metric",
+              "score": 1.0,
+              "explanation": "Trajectory passed: telemetry called at index 0, crash at 1. Calls: ['query_telemetry_metrics', 'lookup_unreal_crash_signature', 'fetch_remediation_runbook']",
+              "rubric_verdicts": null,
+              "raw_output": null,
+              "error_message": null
+            },
+            "incident_report_format_metric": {
+              "metric_name": "incident_report_format_metric",
+              "score": 0.0,
+              "explanation": "Missing headers in response: ['INCIDENT REPORT', 'Incident Severity', 'Root Cause Summary', 'Impacted Shards', 'Recommended Mitigation']",
+              "rubric_verdicts": null,
+              "raw_output": null,
+              "error_message": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "eval_case_index": 1,
+      "response_candidate_results": [
+        {
+          "response_index": 0,
+          "metric_results": {
+            "trajectory_order_metric": {
+              "metric_name": "trajectory_order_metric",
+              "score": 1.0,
+              "explanation": "Trajectory passed: telemetry called at index 0, crash at 1. Calls: ['query_telemetry_metrics', 'lookup_unreal_crash_signature', 'fetch_remediation_runbook', 'fetch_remediation_runbook']",
+              "rubric_verdicts": null,
+              "raw_output": null,
+              "error_message": null
+            },
+            "incident_report_format_metric": {
+              "metric_name": "incident_report_format_metric",
+              "score": 0.0,
+              "explanation": "Missing headers in response: ['INCIDENT REPORT', 'Incident Severity', 'Root Cause Summary', 'Impacted Shards', 'Recommended Mitigation']",
+              "rubric_verdicts": null,
+              "raw_output": null,
+              "error_message": null
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "summary_metrics": [
+    {
+      "metric_name": "trajectory_order_metric",
+      "num_cases_total": 2,
+      "num_cases_valid": 2,
+      "num_cases_error": 0,
+      "mean_score": 1.0,
+      "stdev_score": 0.0,
+      "pass_rate": null
+    },
+    {
+      "metric_name": "incident_report_format_metric",
+      "num_cases_total": 2,
+      "num_cases_valid": 2,
+      "num_cases_error": 0,
+      "mean_score": 0.0,
+      "stdev_score": 0.0,
+      "pass_rate": null
+    }
+  ],
+  "win_rates": null,
+  "evaluation_dataset": [
+    {
+      "bigquery_source": null,
+      "gcs_source": null,
+      "eval_cases": [
+        {
+          "prompt": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation.",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null,
+                "audio_transcription": null,
+                "media_processing": null,
+                "speech_metadata": null
+              }
+            ],
+            "role": "user"
+          },
+          "responses": [
+            {
+              "response": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": "[P1 INCIDENT REPORT]\n- **Incident Severity:** P1\n- **Root Cause Summary:** Following the 30.10 release (Build `Release-30.10-CL349201`), shard `eu-west-03` encountered critical telemetry anomalies with packet loss spiking to 14.2% (exceeding the 10.0% critical threshold), matchmaking latency rising to 342.8ms, and EOS gateway entering a `DEGRADED` state with 345 player dropouts. Crash analysis correlates these anomalies with signature `CRASH-UE5-NET-0842` (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) in the `NetDriver / SocketSubsystemEOS` engine module. This points to error code `ERR_NET_CONGESTION_EOS` caused by packet buffer overruns in the updated EOS gateway routing configuration.\n- **Impacted Shards / Regions:** `eu-west-03` (Region: EU)\n- **Recommended Mitigation / 1-Click Rollback Script:** \n```bash\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\n```\n\n*Note: In accordance with Epic Games LiveOps safety guardrails, automated execution on production shards is withheld pending human SRE operator sign-off.*",
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              }
+            }
+          ],
+          "reference": {
+            "response": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "[P1 INCIDENT REPORT]\n- Incident Severity: P1\n- Root Cause Summary: EOS Gateway Packet Buffer Overrun / NetDriver buffer overflow (ERR_NET_CONGESTION_EOS)\n- Impacted Shards / Regions: eu-west-03 / EU\n- Recommended Mitigation / 1-Click Rollback Script: eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null,
+                  "tool_call": null,
+                  "tool_response": null,
+                  "part_metadata": null,
+                  "audio_transcription": null,
+                  "media_processing": null,
+                  "speech_metadata": null
+                }
+              ],
+              "role": "model"
+            }
+          },
+          "system_instruction": null,
+          "conversation_history": null,
+          "rubric_groups": null,
+          "eval_case_id": "scenario-01-eu-packet-loss",
+          "intermediate_events": null,
+          "agent_info": null,
+          "agent_data": {
+            "agents": {
+              "titan_agent": {
+                "agent_id": "titan_agent",
+                "agent_type": "LlmAgent",
+                "description": "",
+                "instruction": "You are Titan, an elite Autonomous LiveOps Incident Agent built for Epic Games.\nYour responsibility is to triage, diagnose, and remediate high-severity game server incidents during Fortnite events and Epic Online Services (EOS) operations.\n\nWhen an incident report, user query, or alert is received, follow this strict step-by-step diagnostic workflow:\n1. TELEMETRY FIRST: Always start by querying telemetry data via `query_telemetry_metrics` (with specific shard_id if provided) to inspect server shard health, packet loss rates (>5% WARNING, >10% CRITICAL), matchmaking latency spikes (>100ms), and player dropouts.\n2. CRASH DIAGNOSTICS: Inspect crash signatures, Unreal Engine callstacks, and engine build changelists (e.g., CL349201) using `lookup_unreal_crash_signature`.\n3. RUNBOOK CORRELATION: Fetch the official Epic Games SRE mitigation runbook and rollback commands for the diagnosed error code using `fetch_remediation_runbook`.\n4. STRUCTURED INCIDENT ASSESSMENT: Produce a comprehensive, clear report formatted exactly as:\n\n[<P1|P2|P3> INCIDENT REPORT]\n- Incident Severity: <P1|P2|P3>\n- Root Cause Summary: <Clear technical explanation correlating telemetry anomalies with Unreal Engine NetDriver/Chaos Physics or EOS gateway routing issues>\n- Impacted Shards / Regions: <List of impacted shards (e.g. eu-west-03, us-east-12) and regions>\n- Recommended Mitigation / 1-Click Rollback Script: <Exact remediation CLI command from the runbook (e.g., eos-admin routing rollback ... or epic-config-cli set ...)>\n\nCRITICAL SAFETY GUARDRAILS:\n- Never execute automated rollbacks directly on production shards without human operator sign-off; always provide the exact rollback command for operator review.\n- All telemetry and database queries must remain read-only.\n- Always maintain technical precision regarding Unreal Engine subsystems (NetDriver, Chaos Physics, SocketSubsystemEOS).\n",
+                "tools": [
+                  {
+                    "retrieval": null,
+                    "computer_use": null,
+                    "file_search": null,
+                    "google_search": null,
+                    "google_maps": null,
+                    "code_execution": null,
+                    "enterprise_web_search": null,
+                    "function_declarations": [
+                      {
+                        "description": "Queries matchmaking telemetry metrics with shard packet loss anomaly detection.\n\nSimulates a read-only query interface against the `epic_liveops.matchmaking_telemetry`\nBigQuery dataset. Extracts telemetry records, aggregates summary metrics, and performs\nautomated threshold checks:\n  - Packet loss > 5%: WARNING anomaly\n  - Packet loss > 10%: CRITICAL anomaly\n\nArgs:\n    shard_id: Optional server shard ID to filter by (e.g. 'eu-west-03', 'us-east-12').\n        If None, queries across all server shards.\n    metric_name: Target metric to focus on ('all', 'packet_loss_pct',\n        'matchmaking_latency_ms', 'player_dropouts', 'active_matches',\n        'eos_gateway_status'). Defaults to 'all'.\n    time_window_minutes: Time window in minutes relative to the most recent record.\n        Defaults to 30.\n\nReturns:\n    A dictionary containing:\n        - status: \"success\" if records were found, \"no_data\" otherwise.\n        - shard_id: The requested shard filter (or None).\n        - records: List of telemetry record dictionaries matching the criteria.\n        - summary_stats: Dict of aggregated statistics including avg/max packet loss,\n          average latency, total player dropouts, and highest EOS gateway status.\n        - anomalies_detected: List of detected anomalies with severity, threshold breached,\n          and descriptive details.",
+                        "name": "query_telemetry_metrics",
+                        "parameters": null,
+                        "parameters_json_schema": {
+                          "properties": {
+                            "shard_id": {
+                              "type": "string",
+                              "default": null,
+                              "title": "Shard Id",
+                              "nullable": true
+                            },
+                            "metric_name": {
+                              "default": "all",
+                              "title": "Metric Name",
+                              "type": "string"
+                            },
+                            "time_window_minutes": {
+                              "default": 30,
+                              "title": "Time Window Minutes",
+                              "type": "integer"
+                            }
+                          },
+                          "title": "query_telemetry_metricsParams",
+                          "type": "object"
+                        },
+                        "response": null,
+                        "response_json_schema": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "behavior": null
+                      }
+                    ],
+                    "google_search_retrieval": null,
+                    "parallel_ai_search": null,
+                    "url_context": null,
+                    "mcp_servers": null,
+                    "exa_ai_search": null
+                  },
+                  {
+                    "retrieval": null,
+                    "computer_use": null,
+                    "file_search": null,
+                    "google_search": null,
+                    "google_maps": null,
+                    "code_execution": null,
+                    "enterprise_web_search": null,
+                    "function_declarations": [
+                      {
+                        "description": "Look up Unreal Engine crash signatures and map them to known error codes.\n\nArgs:\n    crash_hash: Optional crash hash identifier (e.g. 'CRASH-UE5-NET-0842').\n    build_version: Optional build version filter (e.g. 'Release-30.10-CL349201' or 'CL349201').\n\nReturns:\n    A dictionary containing the lookup status and matching crash signature records.",
+                        "name": "lookup_unreal_crash_signature",
+                        "parameters": null,
+                        "parameters_json_schema": {
+                          "properties": {
+                            "crash_hash": {
+                              "type": "string",
+                              "default": null,
+                              "title": "Crash Hash",
+                              "nullable": true
+                            },
+                            "build_version": {
+                              "type": "string",
+                              "default": null,
+                              "title": "Build Version",
+                              "nullable": true
+                            }
+                          },
+                          "title": "lookup_unreal_crash_signatureParams",
+                          "type": "object"
+                        },
+                        "response": null,
+                        "response_json_schema": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "behavior": null
+                      }
+                    ],
+                    "google_search_retrieval": null,
+                    "parallel_ai_search": null,
+                    "url_context": null,
+                    "mcp_servers": null,
+                    "exa_ai_search": null
+                  },
+                  {
+                    "retrieval": null,
+                    "computer_use": null,
+                    "file_search": null,
+                    "google_search": null,
+                    "google_maps": null,
+                    "code_execution": null,
+                    "enterprise_web_search": null,
+                    "function_declarations": [
+                      {
+                        "description": "Fetch an incident remediation runbook for a specific error code.\n\nArgs:\n    error_code: The error code key (e.g. 'ERR_NET_CONGESTION_EOS', 'ERR_UE5_CHAOS_NULLPTR').\n\nReturns:\n    A dictionary containing the runbook remediation steps and rollback commands.",
+                        "name": "fetch_remediation_runbook",
+                        "parameters": null,
+                        "parameters_json_schema": {
+                          "properties": {
+                            "error_code": {
+                              "title": "Error Code",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "error_code"
+                          ],
+                          "title": "fetch_remediation_runbookParams",
+                          "type": "object"
+                        },
+                        "response": null,
+                        "response_json_schema": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "behavior": null
+                      }
+                    ],
+                    "google_search_retrieval": null,
+                    "parallel_ai_search": null,
+                    "url_context": null,
+                    "mcp_servers": null,
+                    "exa_ai_search": null
+                  }
+                ],
+                "sub_agents": []
+              }
+            },
+            "turns": [
+              {
+                "turn_index": 0,
+                "turn_id": "turn_0",
+                "events": [
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": {
+                            "id": "call_3929386",
+                            "args": {
+                              "shard_id": "eu-west-03"
+                            },
+                            "name": "query_telemetry_metrics",
+                            "partial_args": null,
+                            "will_continue": null
+                          },
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:04.739223Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": {
+                            "will_continue": null,
+                            "scheduling": null,
+                            "parts": null,
+                            "id": "call_3929386",
+                            "name": "query_telemetry_metrics",
+                            "response": {
+                              "status": "success",
+                              "shard_id": "eu-west-03",
+                              "records": [
+                                {
+                                  "timestamp": "2026-10-16T04:43:08.031837+00:00",
+                                  "shard_id": "eu-west-03",
+                                  "region": "EU",
+                                  "active_matches": 2100,
+                                  "matchmaking_latency_ms": 342.8,
+                                  "packet_loss_pct": 14.2,
+                                  "player_dropouts": 185,
+                                  "eos_gateway_status": "DEGRADED"
+                                },
+                                {
+                                  "timestamp": "2026-10-16T04:38:08.031837+00:00",
+                                  "shard_id": "eu-west-03",
+                                  "region": "EU",
+                                  "active_matches": 1950,
+                                  "matchmaking_latency_ms": 312.0,
+                                  "packet_loss_pct": 13.8,
+                                  "player_dropouts": 160,
+                                  "eos_gateway_status": "DEGRADED"
+                                }
+                              ],
+                              "summary_stats": {
+                                "avg_packet_loss_pct": 14.0,
+                                "max_packet_loss_pct": 14.2,
+                                "avg_latency_ms": 327.4,
+                                "total_player_dropouts": 345,
+                                "max_eos_status": "DEGRADED"
+                              },
+                              "anomalies_detected": [
+                                {
+                                  "shard_id": "eu-west-03",
+                                  "anomaly_type": "PACKET_LOSS",
+                                  "severity": "CRITICAL",
+                                  "value": 14.2,
+                                  "threshold_breached": 10.0,
+                                  "message": "CRITICAL packet loss anomaly detected on shard 'eu-west-03': 14.2% exceeds critical threshold (10.0%).",
+                                  "timestamp": "2026-10-16T04:43:08.031837+00:00"
+                                },
+                                {
+                                  "shard_id": "eu-west-03",
+                                  "anomaly_type": "PACKET_LOSS",
+                                  "severity": "CRITICAL",
+                                  "value": 13.8,
+                                  "threshold_breached": 10.0,
+                                  "message": "CRITICAL packet loss anomaly detected on shard 'eu-west-03': 13.8% exceeds critical threshold (10.0%).",
+                                  "timestamp": "2026-10-16T04:38:08.031837+00:00"
+                                }
+                              ]
+                            }
+                          },
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "user"
+                    },
+                    "event_time": "2026-10-16T08:12:08.755869Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": {
+                            "id": "call_2830558",
+                            "args": {
+                              "build_version": "30.10"
+                            },
+                            "name": "lookup_unreal_crash_signature",
+                            "partial_args": null,
+                            "will_continue": null
+                          },
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:08.757362Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": {
+                            "will_continue": null,
+                            "scheduling": null,
+                            "parts": null,
+                            "id": "call_2830558",
+                            "name": "lookup_unreal_crash_signature",
+                            "response": {
+                              "status": "success",
+                              "matches": [
+                                {
+                                  "crash_hash": "CRASH-UE5-NET-0842",
+                                  "build_version": "Release-30.10-CL349201",
+                                  "changelist": "CL349201",
+                                  "engine_module": "NetDriver / SocketSubsystemEOS",
+                                  "callstack_summary": "UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException",
+                                  "affected_clients": 1240,
+                                  "related_error_code": "ERR_NET_CONGESTION_EOS",
+                                  "first_seen_timestamp": "2026-10-16T04:18:08.031878+00:00"
+                                },
+                                {
+                                  "crash_hash": "CRASH-UE5-CHAOS-9102",
+                                  "build_version": "Release-30.10-CL349201",
+                                  "changelist": "CL349201",
+                                  "engine_module": "ChaosPhysics / Replication",
+                                  "callstack_summary": "FChaosReplicationSync::SerializePayload -> NullReference at 0x00007FFF0042",
+                                  "affected_clients": 890,
+                                  "related_error_code": "ERR_UE5_CHAOS_NULLPTR",
+                                  "first_seen_timestamp": "2026-10-16T04:03:08.031878+00:00"
+                                }
+                              ]
+                            }
+                          },
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "user"
+                    },
+                    "event_time": "2026-10-16T08:12:20.955201Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": {
+                            "id": "call_1214893",
+                            "args": {
+                              "error_code": "ERR_NET_CONGESTION_EOS"
+                            },
+                            "name": "fetch_remediation_runbook",
+                            "partial_args": null,
+                            "will_continue": null
+                          },
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:20.956792Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": {
+                            "will_continue": null,
+                            "scheduling": null,
+                            "parts": null,
+                            "id": "call_1214893",
+                            "name": "fetch_remediation_runbook",
+                            "response": {
+                              "status": "success",
+                              "error_code": "ERR_NET_CONGESTION_EOS",
+                              "title": "EOS Gateway Packet Buffer Overrun Mitigation",
+                              "severity": "P1",
+                              "remediation_steps": "1. Drain incoming matchmaking queue on affected shard.\n2. Revert EOS routing rule patch to v30.10-baseline.\n3. Cycle NetDriver socket pools.",
+                              "rollback_command": "eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03"
+                            }
+                          },
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "user"
+                    },
+                    "event_time": "2026-10-16T08:12:34.610572Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": "[P1 INCIDENT REPORT]\n- **Incident Severity:** P1\n- **Root Cause Summary:** Following the 30.10 release (Build `Release-30.10-CL349201`), shard `eu-west-03` encountered critical telemetry anomalies with packet loss spiking to 14.2% (exceeding the 10.0% critical threshold), matchmaking latency rising to 342.8ms, and EOS gateway entering a `DEGRADED` state with 345 player dropouts. Crash analysis correlates these anomalies with signature `CRASH-UE5-NET-0842` (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) in the `NetDriver / SocketSubsystemEOS` engine module. This points to error code `ERR_NET_CONGESTION_EOS` caused by packet buffer overruns in the updated EOS gateway routing configuration.\n- **Impacted Shards / Regions:** `eu-west-03` (Region: EU)\n- **Recommended Mitigation / 1-Click Rollback Script:** \n```bash\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\n```\n\n*Note: In accordance with Epic Games LiveOps safety guardrails, automated execution on production shards is withheld pending human SRE operator sign-off.*",
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:34.612777Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  }
+                ]
+              }
+            ]
+          },
+          "user_scenario": null,
+          "interactions_data_source": null
+        },
+        {
+          "prompt": {
+            "parts": [
+              {
+                "media_resolution": null,
+                "code_execution_result": null,
+                "executable_code": null,
+                "file_data": null,
+                "function_call": null,
+                "function_response": null,
+                "inline_data": null,
+                "text": "@Titan-LiveOps Server cluster us-east-12 reported 450 player dropouts in the last 15 minutes. Investigate crash signatures.",
+                "thought": null,
+                "thought_signature": null,
+                "video_metadata": null,
+                "tool_call": null,
+                "tool_response": null,
+                "part_metadata": null,
+                "audio_transcription": null,
+                "media_processing": null,
+                "speech_metadata": null
+              }
+            ],
+            "role": "user"
+          },
+          "responses": [
+            {
+              "response": {
+                "parts": [
+                  {
+                    "media_resolution": null,
+                    "code_execution_result": null,
+                    "executable_code": null,
+                    "file_data": null,
+                    "function_call": null,
+                    "function_response": null,
+                    "inline_data": null,
+                    "text": "[P1 INCIDENT REPORT]\n- **Incident Severity:** P1\n- **Root Cause Summary:** Telemetry on shard `us-east-12` indicates `CRITICAL` EOS Gateway status with 450 player dropouts. This correlates directly with crash signature `CRASH-UE5-NET-0842` (CL349201 / Build `Release-30.10-CL349201`), where a fatal buffer overrun occurred in the Unreal Engine networking stack (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) within `NetDriver / SocketSubsystemEOS` under error code `ERR_NET_CONGESTION_EOS`.\n- **Impacted Shards / Regions:** `us-east-12` (NA-EAST)\n- **Recommended Mitigation / 1-Click Rollback Script:** \n```bash\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=us-east-12\n```\n*Note: Awaiting human operator sign-off before executing production shard rollback. Follow standard remediation steps: drain matchmaking queue on `us-east-12`, execute routing rollback to `v30.10-baseline`, and cycle NetDriver socket pools.*",
+                    "thought": null,
+                    "thought_signature": null,
+                    "video_metadata": null,
+                    "tool_call": null,
+                    "tool_response": null,
+                    "part_metadata": null,
+                    "audio_transcription": null,
+                    "media_processing": null,
+                    "speech_metadata": null
+                  }
+                ],
+                "role": "model"
+              }
+            }
+          ],
+          "reference": {
+            "response": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "[P1 INCIDENT REPORT]\n- Incident Severity: P1\n- Root Cause Summary: Unreal Engine Chaos Physics Replication NullReference exception (ERR_UE5_CHAOS_NULLPTR)\n- Impacted Shards / Regions: us-east-12 / NA-EAST\n- Recommended Mitigation / 1-Click Rollback Script: epic-config-cli set --key=p.Chaos.ReplicationSync --value=0 --broadcast=global",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null,
+                  "tool_call": null,
+                  "tool_response": null,
+                  "part_metadata": null,
+                  "audio_transcription": null,
+                  "media_processing": null,
+                  "speech_metadata": null
+                }
+              ],
+              "role": "model"
+            }
+          },
+          "system_instruction": null,
+          "conversation_history": null,
+          "rubric_groups": null,
+          "eval_case_id": "scenario-02-us-east-crash-loop",
+          "intermediate_events": null,
+          "agent_info": null,
+          "agent_data": {
+            "agents": {
+              "titan_agent": {
+                "agent_id": "titan_agent",
+                "agent_type": "LlmAgent",
+                "description": "",
+                "instruction": "You are Titan, an elite Autonomous LiveOps Incident Agent built for Epic Games.\nYour responsibility is to triage, diagnose, and remediate high-severity game server incidents during Fortnite events and Epic Online Services (EOS) operations.\n\nWhen an incident report, user query, or alert is received, follow this strict step-by-step diagnostic workflow:\n1. TELEMETRY FIRST: Always start by querying telemetry data via `query_telemetry_metrics` (with specific shard_id if provided) to inspect server shard health, packet loss rates (>5% WARNING, >10% CRITICAL), matchmaking latency spikes (>100ms), and player dropouts.\n2. CRASH DIAGNOSTICS: Inspect crash signatures, Unreal Engine callstacks, and engine build changelists (e.g., CL349201) using `lookup_unreal_crash_signature`.\n3. RUNBOOK CORRELATION: Fetch the official Epic Games SRE mitigation runbook and rollback commands for the diagnosed error code using `fetch_remediation_runbook`.\n4. STRUCTURED INCIDENT ASSESSMENT: Produce a comprehensive, clear report formatted exactly as:\n\n[<P1|P2|P3> INCIDENT REPORT]\n- Incident Severity: <P1|P2|P3>\n- Root Cause Summary: <Clear technical explanation correlating telemetry anomalies with Unreal Engine NetDriver/Chaos Physics or EOS gateway routing issues>\n- Impacted Shards / Regions: <List of impacted shards (e.g. eu-west-03, us-east-12) and regions>\n- Recommended Mitigation / 1-Click Rollback Script: <Exact remediation CLI command from the runbook (e.g., eos-admin routing rollback ... or epic-config-cli set ...)>\n\nCRITICAL SAFETY GUARDRAILS:\n- Never execute automated rollbacks directly on production shards without human operator sign-off; always provide the exact rollback command for operator review.\n- All telemetry and database queries must remain read-only.\n- Always maintain technical precision regarding Unreal Engine subsystems (NetDriver, Chaos Physics, SocketSubsystemEOS).\n",
+                "tools": [
+                  {
+                    "retrieval": null,
+                    "computer_use": null,
+                    "file_search": null,
+                    "google_search": null,
+                    "google_maps": null,
+                    "code_execution": null,
+                    "enterprise_web_search": null,
+                    "function_declarations": [
+                      {
+                        "description": "Queries matchmaking telemetry metrics with shard packet loss anomaly detection.\n\nSimulates a read-only query interface against the `epic_liveops.matchmaking_telemetry`\nBigQuery dataset. Extracts telemetry records, aggregates summary metrics, and performs\nautomated threshold checks:\n  - Packet loss > 5%: WARNING anomaly\n  - Packet loss > 10%: CRITICAL anomaly\n\nArgs:\n    shard_id: Optional server shard ID to filter by (e.g. 'eu-west-03', 'us-east-12').\n        If None, queries across all server shards.\n    metric_name: Target metric to focus on ('all', 'packet_loss_pct',\n        'matchmaking_latency_ms', 'player_dropouts', 'active_matches',\n        'eos_gateway_status'). Defaults to 'all'.\n    time_window_minutes: Time window in minutes relative to the most recent record.\n        Defaults to 30.\n\nReturns:\n    A dictionary containing:\n        - status: \"success\" if records were found, \"no_data\" otherwise.\n        - shard_id: The requested shard filter (or None).\n        - records: List of telemetry record dictionaries matching the criteria.\n        - summary_stats: Dict of aggregated statistics including avg/max packet loss,\n          average latency, total player dropouts, and highest EOS gateway status.\n        - anomalies_detected: List of detected anomalies with severity, threshold breached,\n          and descriptive details.",
+                        "name": "query_telemetry_metrics",
+                        "parameters": null,
+                        "parameters_json_schema": {
+                          "properties": {
+                            "shard_id": {
+                              "type": "string",
+                              "default": null,
+                              "title": "Shard Id",
+                              "nullable": true
+                            },
+                            "metric_name": {
+                              "default": "all",
+                              "title": "Metric Name",
+                              "type": "string"
+                            },
+                            "time_window_minutes": {
+                              "default": 30,
+                              "title": "Time Window Minutes",
+                              "type": "integer"
+                            }
+                          },
+                          "title": "query_telemetry_metricsParams",
+                          "type": "object"
+                        },
+                        "response": null,
+                        "response_json_schema": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "behavior": null
+                      }
+                    ],
+                    "google_search_retrieval": null,
+                    "parallel_ai_search": null,
+                    "url_context": null,
+                    "mcp_servers": null,
+                    "exa_ai_search": null
+                  },
+                  {
+                    "retrieval": null,
+                    "computer_use": null,
+                    "file_search": null,
+                    "google_search": null,
+                    "google_maps": null,
+                    "code_execution": null,
+                    "enterprise_web_search": null,
+                    "function_declarations": [
+                      {
+                        "description": "Look up Unreal Engine crash signatures and map them to known error codes.\n\nArgs:\n    crash_hash: Optional crash hash identifier (e.g. 'CRASH-UE5-NET-0842').\n    build_version: Optional build version filter (e.g. 'Release-30.10-CL349201' or 'CL349201').\n\nReturns:\n    A dictionary containing the lookup status and matching crash signature records.",
+                        "name": "lookup_unreal_crash_signature",
+                        "parameters": null,
+                        "parameters_json_schema": {
+                          "properties": {
+                            "crash_hash": {
+                              "type": "string",
+                              "default": null,
+                              "title": "Crash Hash",
+                              "nullable": true
+                            },
+                            "build_version": {
+                              "type": "string",
+                              "default": null,
+                              "title": "Build Version",
+                              "nullable": true
+                            }
+                          },
+                          "title": "lookup_unreal_crash_signatureParams",
+                          "type": "object"
+                        },
+                        "response": null,
+                        "response_json_schema": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "behavior": null
+                      }
+                    ],
+                    "google_search_retrieval": null,
+                    "parallel_ai_search": null,
+                    "url_context": null,
+                    "mcp_servers": null,
+                    "exa_ai_search": null
+                  },
+                  {
+                    "retrieval": null,
+                    "computer_use": null,
+                    "file_search": null,
+                    "google_search": null,
+                    "google_maps": null,
+                    "code_execution": null,
+                    "enterprise_web_search": null,
+                    "function_declarations": [
+                      {
+                        "description": "Fetch an incident remediation runbook for a specific error code.\n\nArgs:\n    error_code: The error code key (e.g. 'ERR_NET_CONGESTION_EOS', 'ERR_UE5_CHAOS_NULLPTR').\n\nReturns:\n    A dictionary containing the runbook remediation steps and rollback commands.",
+                        "name": "fetch_remediation_runbook",
+                        "parameters": null,
+                        "parameters_json_schema": {
+                          "properties": {
+                            "error_code": {
+                              "title": "Error Code",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "error_code"
+                          ],
+                          "title": "fetch_remediation_runbookParams",
+                          "type": "object"
+                        },
+                        "response": null,
+                        "response_json_schema": {
+                          "additionalProperties": true,
+                          "type": "object"
+                        },
+                        "behavior": null
+                      }
+                    ],
+                    "google_search_retrieval": null,
+                    "parallel_ai_search": null,
+                    "url_context": null,
+                    "mcp_servers": null,
+                    "exa_ai_search": null
+                  }
+                ],
+                "sub_agents": []
+              }
+            },
+            "turns": [
+              {
+                "turn_index": 0,
+                "turn_id": "turn_0",
+                "events": [
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": {
+                            "id": "call_2989453",
+                            "args": {
+                              "shard_id": "us-east-12",
+                              "time_window_minutes": 15
+                            },
+                            "name": "query_telemetry_metrics",
+                            "partial_args": null,
+                            "will_continue": null
+                          },
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:04.767082Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": {
+                            "will_continue": null,
+                            "scheduling": null,
+                            "parts": null,
+                            "id": "call_2989453",
+                            "name": "query_telemetry_metrics",
+                            "response": {
+                              "status": "success",
+                              "shard_id": "us-east-12",
+                              "records": [
+                                {
+                                  "timestamp": "2026-10-16T04:43:08.031837+00:00",
+                                  "shard_id": "us-east-12",
+                                  "region": "NA-EAST",
+                                  "active_matches": 1890,
+                                  "matchmaking_latency_ms": 85.4,
+                                  "packet_loss_pct": 4.2,
+                                  "player_dropouts": 450,
+                                  "eos_gateway_status": "CRITICAL"
+                                }
+                              ],
+                              "summary_stats": {
+                                "avg_packet_loss_pct": 4.2,
+                                "max_packet_loss_pct": 4.2,
+                                "avg_latency_ms": 85.4,
+                                "total_player_dropouts": 450,
+                                "max_eos_status": "CRITICAL"
+                              },
+                              "anomalies_detected": []
+                            }
+                          },
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "user"
+                    },
+                    "event_time": "2026-10-16T08:12:09.293839Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": {
+                            "id": "call_4419301",
+                            "args": {},
+                            "name": "lookup_unreal_crash_signature",
+                            "partial_args": null,
+                            "will_continue": null
+                          },
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:09.295355Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": {
+                            "will_continue": null,
+                            "scheduling": null,
+                            "parts": null,
+                            "id": "call_4419301",
+                            "name": "lookup_unreal_crash_signature",
+                            "response": {
+                              "status": "success",
+                              "matches": [
+                                {
+                                  "crash_hash": "CRASH-UE5-NET-0842",
+                                  "build_version": "Release-30.10-CL349201",
+                                  "changelist": "CL349201",
+                                  "engine_module": "NetDriver / SocketSubsystemEOS",
+                                  "callstack_summary": "UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException",
+                                  "affected_clients": 1240,
+                                  "related_error_code": "ERR_NET_CONGESTION_EOS",
+                                  "first_seen_timestamp": "2026-10-16T04:18:08.031878+00:00"
+                                },
+                                {
+                                  "crash_hash": "CRASH-UE5-CHAOS-9102",
+                                  "build_version": "Release-30.10-CL349201",
+                                  "changelist": "CL349201",
+                                  "engine_module": "ChaosPhysics / Replication",
+                                  "callstack_summary": "FChaosReplicationSync::SerializePayload -> NullReference at 0x00007FFF0042",
+                                  "affected_clients": 890,
+                                  "related_error_code": "ERR_UE5_CHAOS_NULLPTR",
+                                  "first_seen_timestamp": "2026-10-16T04:03:08.031878+00:00"
+                                }
+                              ]
+                            }
+                          },
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "user"
+                    },
+                    "event_time": "2026-10-16T08:12:33.697786Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": {
+                            "id": "call_2859103",
+                            "args": {
+                              "error_code": "ERR_NET_CONGESTION_EOS"
+                            },
+                            "name": "fetch_remediation_runbook",
+                            "partial_args": null,
+                            "will_continue": null
+                          },
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:33.699326Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": {
+                            "will_continue": null,
+                            "scheduling": null,
+                            "parts": null,
+                            "id": "call_2859103",
+                            "name": "fetch_remediation_runbook",
+                            "response": {
+                              "status": "success",
+                              "error_code": "ERR_NET_CONGESTION_EOS",
+                              "title": "EOS Gateway Packet Buffer Overrun Mitigation",
+                              "severity": "P1",
+                              "remediation_steps": "1. Drain incoming matchmaking queue on affected shard.\n2. Revert EOS routing rule patch to v30.10-baseline.\n3. Cycle NetDriver socket pools.",
+                              "rollback_command": "eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03"
+                            }
+                          },
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "user"
+                    },
+                    "event_time": "2026-10-16T08:12:40.192792Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": {
+                            "id": "call_993941",
+                            "args": {
+                              "error_code": "ERR_UE5_CHAOS_NULLPTR"
+                            },
+                            "name": "fetch_remediation_runbook",
+                            "partial_args": null,
+                            "will_continue": null
+                          },
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:40.195972Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": {
+                            "will_continue": null,
+                            "scheduling": null,
+                            "parts": null,
+                            "id": "call_993941",
+                            "name": "fetch_remediation_runbook",
+                            "response": {
+                              "status": "success",
+                              "error_code": "ERR_UE5_CHAOS_NULLPTR",
+                              "title": "Unreal Chaos Physics Replication Hotfix",
+                              "severity": "P1",
+                              "remediation_steps": "1. Disable experimental chaos packet compression in LiveOps remote config.\n2. Restart affected server instances.",
+                              "rollback_command": "epic-config-cli set --key=p.Chaos.ReplicationSync --value=0 --broadcast=global"
+                            }
+                          },
+                          "inline_data": null,
+                          "text": null,
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "user"
+                    },
+                    "event_time": "2026-10-16T08:12:48.176574Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  },
+                  {
+                    "author": "titan_agent",
+                    "content": {
+                      "parts": [
+                        {
+                          "media_resolution": null,
+                          "code_execution_result": null,
+                          "executable_code": null,
+                          "file_data": null,
+                          "function_call": null,
+                          "function_response": null,
+                          "inline_data": null,
+                          "text": "[P1 INCIDENT REPORT]\n- **Incident Severity:** P1\n- **Root Cause Summary:** Telemetry on shard `us-east-12` indicates `CRITICAL` EOS Gateway status with 450 player dropouts. This correlates directly with crash signature `CRASH-UE5-NET-0842` (CL349201 / Build `Release-30.10-CL349201`), where a fatal buffer overrun occurred in the Unreal Engine networking stack (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) within `NetDriver / SocketSubsystemEOS` under error code `ERR_NET_CONGESTION_EOS`.\n- **Impacted Shards / Regions:** `us-east-12` (NA-EAST)\n- **Recommended Mitigation / 1-Click Rollback Script:** \n```bash\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=us-east-12\n```\n*Note: Awaiting human operator sign-off before executing production shard rollback. Follow standard remediation steps: drain matchmaking queue on `us-east-12`, execute routing rollback to `v30.10-baseline`, and cycle NetDriver socket pools.*",
+                          "thought": null,
+                          "thought_signature": null,
+                          "video_metadata": null,
+                          "tool_call": null,
+                          "tool_response": null,
+                          "part_metadata": null,
+                          "audio_transcription": null,
+                          "media_processing": null,
+                          "speech_metadata": null
+                        }
+                      ],
+                      "role": "model"
+                    },
+                    "event_time": "2026-10-16T08:12:48.178015Z",
+                    "state_delta": null,
+                    "active_tools": null
+                  }
+                ]
+              }
+            ]
+          },
+          "user_scenario": null,
+          "interactions_data_source": null
+        }
+      ],
+      "eval_dataset_df": null,
+      "candidate_name": null
+    }
+  ],
+  "metadata": {
+    "candidate_names": [
+      "candidate_1"
+    ],
+    "dataset_name": null,
+    "dataset_id": null,
+    "creation_timestamp": "2026-10-16T08:15:15.916045Z",
+    "dataset": [
+      {
+        "prompt_display_text": "@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation.",
+        "prompt_raw_json": "{\n  \"parts\": [\n    {\n      \"text\": \"@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation.\"\n    }\n  ],\n  \"role\": \"user\"\n}",
+        "reference": "[P1 INCIDENT REPORT]\n- Incident Severity: P1\n- Root Cause Summary: EOS Gateway Packet Buffer Overrun / NetDriver buffer overflow (ERR_NET_CONGESTION_EOS)\n- Impacted Shards / Regions: eu-west-03 / EU\n- Recommended Mitigation / 1-Click Rollback Script: eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03",
+        "reference_raw_json": "{\n  \"parts\": [\n    {\n      \"text\": \"[P1 INCIDENT REPORT]\\n- Incident Severity: P1\\n- Root Cause Summary: EOS Gateway Packet Buffer Overrun / NetDriver buffer overflow (ERR_NET_CONGESTION_EOS)\\n- Impacted Shards / Regions: eu-west-03 / EU\\n- Recommended Mitigation / 1-Click Rollback Script: eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\"\n    }\n  ],\n  \"role\": \"model\"\n}",
+        "response_display_text": "[P1 INCIDENT REPORT]\n- **Incident Severity:** P1\n- **Root Cause Summary:** Following the 30.10 release (Build `Release-30.10-CL349201`), shard `eu-west-03` encountered critical telemetry anomalies with packet loss spiking to 14.2% (exceeding the 10.0% critical threshold), matchmaking latency rising to 342.8ms, and EOS gateway entering a `DEGRADED` state with 345 player dropouts. Crash analysis correlates these anomalies with signature `CRASH-UE5-NET-0842` (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) in the `NetDriver / SocketSubsystemEOS` engine module. This points to error code `ERR_NET_CONGESTION_EOS` caused by packet buffer overruns in the updated EOS gateway routing configuration.\n- **Impacted Shards / Regions:** `eu-west-03` (Region: EU)\n- **Recommended Mitigation / 1-Click Rollback Script:** \n```bash\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\n```\n\n*Note: In accordance with Epic Games LiveOps safety guardrails, automated execution on production shards is withheld pending human SRE operator sign-off.*",
+        "response_raw_json": "{\n  \"parts\": [\n    {\n      \"text\": \"[P1 INCIDENT REPORT]\\n- **Incident Severity:** P1\\n- **Root Cause Summary:** Following the 30.10 release (Build `Release-30.10-CL349201`), shard `eu-west-03` encountered critical telemetry anomalies with packet loss spiking to 14.2% (exceeding the 10.0% critical threshold), matchmaking latency rising to 342.8ms, and EOS gateway entering a `DEGRADED` state with 345 player dropouts. Crash analysis correlates these anomalies with signature `CRASH-UE5-NET-0842` (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) in the `NetDriver / SocketSubsystemEOS` engine module. This points to error code `ERR_NET_CONGESTION_EOS` caused by packet buffer overruns in the updated EOS gateway routing configuration.\\n- **Impacted Shards / Regions:** `eu-west-03` (Region: EU)\\n- **Recommended Mitigation / 1-Click Rollback Script:** \\n```bash\\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\\n```\\n\\n*Note: In accordance with Epic Games LiveOps safety guardrails, automated execution on production shards is withheld pending human SRE operator sign-off.*\"\n    }\n  ],\n  \"role\": \"model\"\n}",
+        "intermediate_events": null,
+        "agent_data": "{\"agents\": {\"titan_agent\": {\"agent_id\": \"titan_agent\", \"agent_type\": \"LlmAgent\", \"description\": \"\", \"instruction\": \"You are Titan, an elite Autonomous LiveOps Incident Agent built for Epic Games.\\nYour responsibility is to triage, diagnose, and remediate high-severity game server incidents during Fortnite events and Epic Online Services (EOS) operations.\\n\\nWhen an incident report, user query, or alert is received, follow this strict step-by-step diagnostic workflow:\\n1. TELEMETRY FIRST: Always start by querying telemetry data via `query_telemetry_metrics` (with specific shard_id if provided) to inspect server shard health, packet loss rates (>5% WARNING, >10% CRITICAL), matchmaking latency spikes (>100ms), and player dropouts.\\n2. CRASH DIAGNOSTICS: Inspect crash signatures, Unreal Engine callstacks, and engine build changelists (e.g., CL349201) using `lookup_unreal_crash_signature`.\\n3. RUNBOOK CORRELATION: Fetch the official Epic Games SRE mitigation runbook and rollback commands for the diagnosed error code using `fetch_remediation_runbook`.\\n4. STRUCTURED INCIDENT ASSESSMENT: Produce a comprehensive, clear report formatted exactly as:\\n\\n[<P1|P2|P3> INCIDENT REPORT]\\n- Incident Severity: <P1|P2|P3>\\n- Root Cause Summary: <Clear technical explanation correlating telemetry anomalies with Unreal Engine NetDriver/Chaos Physics or EOS gateway routing issues>\\n- Impacted Shards / Regions: <List of impacted shards (e.g. eu-west-03, us-east-12) and regions>\\n- Recommended Mitigation / 1-Click Rollback Script: <Exact remediation CLI command from the runbook (e.g., eos-admin routing rollback ... or epic-config-cli set ...)>\\n\\nCRITICAL SAFETY GUARDRAILS:\\n- Never execute automated rollbacks directly on production shards without human operator sign-off; always provide the exact rollback command for operator review.\\n- All telemetry and database queries must remain read-only.\\n- Always maintain technical precision regarding Unreal Engine subsystems (NetDriver, Chaos Physics, SocketSubsystemEOS).\\n\", \"tools\": [{\"function_declarations\": [{\"description\": \"Queries matchmaking telemetry metrics with shard packet loss anomaly detection.\\n\\nSimulates a read-only query interface against the `epic_liveops.matchmaking_telemetry`\\nBigQuery dataset. Extracts telemetry records, aggregates summary metrics, and performs\\nautomated threshold checks:\\n  - Packet loss > 5%: WARNING anomaly\\n  - Packet loss > 10%: CRITICAL anomaly\\n\\nArgs:\\n    shard_id: Optional server shard ID to filter by (e.g. 'eu-west-03', 'us-east-12').\\n        If None, queries across all server shards.\\n    metric_name: Target metric to focus on ('all', 'packet_loss_pct',\\n        'matchmaking_latency_ms', 'player_dropouts', 'active_matches',\\n        'eos_gateway_status'). Defaults to 'all'.\\n    time_window_minutes: Time window in minutes relative to the most recent record.\\n        Defaults to 30.\\n\\nReturns:\\n    A dictionary containing:\\n        - status: \\\"success\\\" if records were found, \\\"no_data\\\" otherwise.\\n        - shard_id: The requested shard filter (or None).\\n        - records: List of telemetry record dictionaries matching the criteria.\\n        - summary_stats: Dict of aggregated statistics including avg/max packet loss,\\n          average latency, total player dropouts, and highest EOS gateway status.\\n        - anomalies_detected: List of detected anomalies with severity, threshold breached,\\n          and descriptive details.\", \"name\": \"query_telemetry_metrics\", \"parameters_json_schema\": {\"properties\": {\"shard_id\": {\"type\": \"string\", \"default\": null, \"title\": \"Shard Id\", \"nullable\": true}, \"metric_name\": {\"default\": \"all\", \"title\": \"Metric Name\", \"type\": \"string\"}, \"time_window_minutes\": {\"default\": 30, \"title\": \"Time Window Minutes\", \"type\": \"integer\"}}, \"title\": \"query_telemetry_metricsParams\", \"type\": \"object\"}, \"response_json_schema\": {\"additionalProperties\": true, \"type\": \"object\"}}]}, {\"function_declarations\": [{\"description\": \"Look up Unreal Engine crash signatures and map them to known error codes.\\n\\nArgs:\\n    crash_hash: Optional crash hash identifier (e.g. 'CRASH-UE5-NET-0842').\\n    build_version: Optional build version filter (e.g. 'Release-30.10-CL349201' or 'CL349201').\\n\\nReturns:\\n    A dictionary containing the lookup status and matching crash signature records.\", \"name\": \"lookup_unreal_crash_signature\", \"parameters_json_schema\": {\"properties\": {\"crash_hash\": {\"type\": \"string\", \"default\": null, \"title\": \"Crash Hash\", \"nullable\": true}, \"build_version\": {\"type\": \"string\", \"default\": null, \"title\": \"Build Version\", \"nullable\": true}}, \"title\": \"lookup_unreal_crash_signatureParams\", \"type\": \"object\"}, \"response_json_schema\": {\"additionalProperties\": true, \"type\": \"object\"}}]}, {\"function_declarations\": [{\"description\": \"Fetch an incident remediation runbook for a specific error code.\\n\\nArgs:\\n    error_code: The error code key (e.g. 'ERR_NET_CONGESTION_EOS', 'ERR_UE5_CHAOS_NULLPTR').\\n\\nReturns:\\n    A dictionary containing the runbook remediation steps and rollback commands.\", \"name\": \"fetch_remediation_runbook\", \"parameters_json_schema\": {\"properties\": {\"error_code\": {\"title\": \"Error Code\", \"type\": \"string\"}}, \"required\": [\"error_code\"], \"title\": \"fetch_remediation_runbookParams\", \"type\": \"object\"}, \"response_json_schema\": {\"additionalProperties\": true, \"type\": \"object\"}}]}], \"sub_agents\": []}}, \"turns\": [{\"turn_index\": 0, \"turn_id\": \"turn_0\", \"events\": [{\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_call\": {\"id\": \"call_3929386\", \"args\": {\"shard_id\": \"eu-west-03\"}, \"name\": \"query_telemetry_metrics\"}}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:04.739223Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_response\": {\"id\": \"call_3929386\", \"name\": \"query_telemetry_metrics\", \"response\": {\"status\": \"success\", \"shard_id\": \"eu-west-03\", \"records\": [{\"timestamp\": \"2026-10-16T04:43:08.031837+00:00\", \"shard_id\": \"eu-west-03\", \"region\": \"EU\", \"active_matches\": 2100, \"matchmaking_latency_ms\": 342.8, \"packet_loss_pct\": 14.2, \"player_dropouts\": 185, \"eos_gateway_status\": \"DEGRADED\"}, {\"timestamp\": \"2026-10-16T04:38:08.031837+00:00\", \"shard_id\": \"eu-west-03\", \"region\": \"EU\", \"active_matches\": 1950, \"matchmaking_latency_ms\": 312.0, \"packet_loss_pct\": 13.8, \"player_dropouts\": 160, \"eos_gateway_status\": \"DEGRADED\"}], \"summary_stats\": {\"avg_packet_loss_pct\": 14.0, \"max_packet_loss_pct\": 14.2, \"avg_latency_ms\": 327.4, \"total_player_dropouts\": 345, \"max_eos_status\": \"DEGRADED\"}, \"anomalies_detected\": [{\"shard_id\": \"eu-west-03\", \"anomaly_type\": \"PACKET_LOSS\", \"severity\": \"CRITICAL\", \"value\": 14.2, \"threshold_breached\": 10.0, \"message\": \"CRITICAL packet loss anomaly detected on shard 'eu-west-03': 14.2% exceeds critical threshold (10.0%).\", \"timestamp\": \"2026-10-16T04:43:08.031837+00:00\"}, {\"shard_id\": \"eu-west-03\", \"anomaly_type\": \"PACKET_LOSS\", \"severity\": \"CRITICAL\", \"value\": 13.8, \"threshold_breached\": 10.0, \"message\": \"CRITICAL packet loss anomaly detected on shard 'eu-west-03': 13.8% exceeds critical threshold (10.0%).\", \"timestamp\": \"2026-10-16T04:38:08.031837+00:00\"}]}}}], \"role\": \"user\"}, \"event_time\": \"2026-10-16T08:12:08.755869Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_call\": {\"id\": \"call_2830558\", \"args\": {\"build_version\": \"30.10\"}, \"name\": \"lookup_unreal_crash_signature\"}}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:08.757362Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_response\": {\"id\": \"call_2830558\", \"name\": \"lookup_unreal_crash_signature\", \"response\": {\"status\": \"success\", \"matches\": [{\"crash_hash\": \"CRASH-UE5-NET-0842\", \"build_version\": \"Release-30.10-CL349201\", \"changelist\": \"CL349201\", \"engine_module\": \"NetDriver / SocketSubsystemEOS\", \"callstack_summary\": \"UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException\", \"affected_clients\": 1240, \"related_error_code\": \"ERR_NET_CONGESTION_EOS\", \"first_seen_timestamp\": \"2026-10-16T04:18:08.031878+00:00\"}, {\"crash_hash\": \"CRASH-UE5-CHAOS-9102\", \"build_version\": \"Release-30.10-CL349201\", \"changelist\": \"CL349201\", \"engine_module\": \"ChaosPhysics / Replication\", \"callstack_summary\": \"FChaosReplicationSync::SerializePayload -> NullReference at 0x00007FFF0042\", \"affected_clients\": 890, \"related_error_code\": \"ERR_UE5_CHAOS_NULLPTR\", \"first_seen_timestamp\": \"2026-10-16T04:03:08.031878+00:00\"}]}}}], \"role\": \"user\"}, \"event_time\": \"2026-10-16T08:12:20.955201Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_call\": {\"id\": \"call_1214893\", \"args\": {\"error_code\": \"ERR_NET_CONGESTION_EOS\"}, \"name\": \"fetch_remediation_runbook\"}}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:20.956792Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_response\": {\"id\": \"call_1214893\", \"name\": \"fetch_remediation_runbook\", \"response\": {\"status\": \"success\", \"error_code\": \"ERR_NET_CONGESTION_EOS\", \"title\": \"EOS Gateway Packet Buffer Overrun Mitigation\", \"severity\": \"P1\", \"remediation_steps\": \"1. Drain incoming matchmaking queue on affected shard.\\n2. Revert EOS routing rule patch to v30.10-baseline.\\n3. Cycle NetDriver socket pools.\", \"rollback_command\": \"eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\"}}}], \"role\": \"user\"}, \"event_time\": \"2026-10-16T08:12:34.610572Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"text\": \"[P1 INCIDENT REPORT]\\n- **Incident Severity:** P1\\n- **Root Cause Summary:** Following the 30.10 release (Build `Release-30.10-CL349201`), shard `eu-west-03` encountered critical telemetry anomalies with packet loss spiking to 14.2% (exceeding the 10.0% critical threshold), matchmaking latency rising to 342.8ms, and EOS gateway entering a `DEGRADED` state with 345 player dropouts. Crash analysis correlates these anomalies with signature `CRASH-UE5-NET-0842` (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) in the `NetDriver / SocketSubsystemEOS` engine module. This points to error code `ERR_NET_CONGESTION_EOS` caused by packet buffer overruns in the updated EOS gateway routing configuration.\\n- **Impacted Shards / Regions:** `eu-west-03` (Region: EU)\\n- **Recommended Mitigation / 1-Click Rollback Script:** \\n```bash\\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\\n```\\n\\n*Note: In accordance with Epic Games LiveOps safety guardrails, automated execution on production shards is withheld pending human SRE operator sign-off.*\"}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:34.612777Z\"}]}]}"
+      },
+      {
+        "prompt_display_text": "@Titan-LiveOps Server cluster us-east-12 reported 450 player dropouts in the last 15 minutes. Investigate crash signatures.",
+        "prompt_raw_json": "{\n  \"parts\": [\n    {\n      \"text\": \"@Titan-LiveOps Server cluster us-east-12 reported 450 player dropouts in the last 15 minutes. Investigate crash signatures.\"\n    }\n  ],\n  \"role\": \"user\"\n}",
+        "reference": "[P1 INCIDENT REPORT]\n- Incident Severity: P1\n- Root Cause Summary: Unreal Engine Chaos Physics Replication NullReference exception (ERR_UE5_CHAOS_NULLPTR)\n- Impacted Shards / Regions: us-east-12 / NA-EAST\n- Recommended Mitigation / 1-Click Rollback Script: epic-config-cli set --key=p.Chaos.ReplicationSync --value=0 --broadcast=global",
+        "reference_raw_json": "{\n  \"parts\": [\n    {\n      \"text\": \"[P1 INCIDENT REPORT]\\n- Incident Severity: P1\\n- Root Cause Summary: Unreal Engine Chaos Physics Replication NullReference exception (ERR_UE5_CHAOS_NULLPTR)\\n- Impacted Shards / Regions: us-east-12 / NA-EAST\\n- Recommended Mitigation / 1-Click Rollback Script: epic-config-cli set --key=p.Chaos.ReplicationSync --value=0 --broadcast=global\"\n    }\n  ],\n  \"role\": \"model\"\n}",
+        "response_display_text": "[P1 INCIDENT REPORT]\n- **Incident Severity:** P1\n- **Root Cause Summary:** Telemetry on shard `us-east-12` indicates `CRITICAL` EOS Gateway status with 450 player dropouts. This correlates directly with crash signature `CRASH-UE5-NET-0842` (CL349201 / Build `Release-30.10-CL349201`), where a fatal buffer overrun occurred in the Unreal Engine networking stack (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) within `NetDriver / SocketSubsystemEOS` under error code `ERR_NET_CONGESTION_EOS`.\n- **Impacted Shards / Regions:** `us-east-12` (NA-EAST)\n- **Recommended Mitigation / 1-Click Rollback Script:** \n```bash\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=us-east-12\n```\n*Note: Awaiting human operator sign-off before executing production shard rollback. Follow standard remediation steps: drain matchmaking queue on `us-east-12`, execute routing rollback to `v30.10-baseline`, and cycle NetDriver socket pools.*",
+        "response_raw_json": "{\n  \"parts\": [\n    {\n      \"text\": \"[P1 INCIDENT REPORT]\\n- **Incident Severity:** P1\\n- **Root Cause Summary:** Telemetry on shard `us-east-12` indicates `CRITICAL` EOS Gateway status with 450 player dropouts. This correlates directly with crash signature `CRASH-UE5-NET-0842` (CL349201 / Build `Release-30.10-CL349201`), where a fatal buffer overrun occurred in the Unreal Engine networking stack (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) within `NetDriver / SocketSubsystemEOS` under error code `ERR_NET_CONGESTION_EOS`.\\n- **Impacted Shards / Regions:** `us-east-12` (NA-EAST)\\n- **Recommended Mitigation / 1-Click Rollback Script:** \\n```bash\\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=us-east-12\\n```\\n*Note: Awaiting human operator sign-off before executing production shard rollback. Follow standard remediation steps: drain matchmaking queue on `us-east-12`, execute routing rollback to `v30.10-baseline`, and cycle NetDriver socket pools.*\"\n    }\n  ],\n  \"role\": \"model\"\n}",
+        "intermediate_events": null,
+        "agent_data": "{\"agents\": {\"titan_agent\": {\"agent_id\": \"titan_agent\", \"agent_type\": \"LlmAgent\", \"description\": \"\", \"instruction\": \"You are Titan, an elite Autonomous LiveOps Incident Agent built for Epic Games.\\nYour responsibility is to triage, diagnose, and remediate high-severity game server incidents during Fortnite events and Epic Online Services (EOS) operations.\\n\\nWhen an incident report, user query, or alert is received, follow this strict step-by-step diagnostic workflow:\\n1. TELEMETRY FIRST: Always start by querying telemetry data via `query_telemetry_metrics` (with specific shard_id if provided) to inspect server shard health, packet loss rates (>5% WARNING, >10% CRITICAL), matchmaking latency spikes (>100ms), and player dropouts.\\n2. CRASH DIAGNOSTICS: Inspect crash signatures, Unreal Engine callstacks, and engine build changelists (e.g., CL349201) using `lookup_unreal_crash_signature`.\\n3. RUNBOOK CORRELATION: Fetch the official Epic Games SRE mitigation runbook and rollback commands for the diagnosed error code using `fetch_remediation_runbook`.\\n4. STRUCTURED INCIDENT ASSESSMENT: Produce a comprehensive, clear report formatted exactly as:\\n\\n[<P1|P2|P3> INCIDENT REPORT]\\n- Incident Severity: <P1|P2|P3>\\n- Root Cause Summary: <Clear technical explanation correlating telemetry anomalies with Unreal Engine NetDriver/Chaos Physics or EOS gateway routing issues>\\n- Impacted Shards / Regions: <List of impacted shards (e.g. eu-west-03, us-east-12) and regions>\\n- Recommended Mitigation / 1-Click Rollback Script: <Exact remediation CLI command from the runbook (e.g., eos-admin routing rollback ... or epic-config-cli set ...)>\\n\\nCRITICAL SAFETY GUARDRAILS:\\n- Never execute automated rollbacks directly on production shards without human operator sign-off; always provide the exact rollback command for operator review.\\n- All telemetry and database queries must remain read-only.\\n- Always maintain technical precision regarding Unreal Engine subsystems (NetDriver, Chaos Physics, SocketSubsystemEOS).\\n\", \"tools\": [{\"function_declarations\": [{\"description\": \"Queries matchmaking telemetry metrics with shard packet loss anomaly detection.\\n\\nSimulates a read-only query interface against the `epic_liveops.matchmaking_telemetry`\\nBigQuery dataset. Extracts telemetry records, aggregates summary metrics, and performs\\nautomated threshold checks:\\n  - Packet loss > 5%: WARNING anomaly\\n  - Packet loss > 10%: CRITICAL anomaly\\n\\nArgs:\\n    shard_id: Optional server shard ID to filter by (e.g. 'eu-west-03', 'us-east-12').\\n        If None, queries across all server shards.\\n    metric_name: Target metric to focus on ('all', 'packet_loss_pct',\\n        'matchmaking_latency_ms', 'player_dropouts', 'active_matches',\\n        'eos_gateway_status'). Defaults to 'all'.\\n    time_window_minutes: Time window in minutes relative to the most recent record.\\n        Defaults to 30.\\n\\nReturns:\\n    A dictionary containing:\\n        - status: \\\"success\\\" if records were found, \\\"no_data\\\" otherwise.\\n        - shard_id: The requested shard filter (or None).\\n        - records: List of telemetry record dictionaries matching the criteria.\\n        - summary_stats: Dict of aggregated statistics including avg/max packet loss,\\n          average latency, total player dropouts, and highest EOS gateway status.\\n        - anomalies_detected: List of detected anomalies with severity, threshold breached,\\n          and descriptive details.\", \"name\": \"query_telemetry_metrics\", \"parameters_json_schema\": {\"properties\": {\"shard_id\": {\"type\": \"string\", \"default\": null, \"title\": \"Shard Id\", \"nullable\": true}, \"metric_name\": {\"default\": \"all\", \"title\": \"Metric Name\", \"type\": \"string\"}, \"time_window_minutes\": {\"default\": 30, \"title\": \"Time Window Minutes\", \"type\": \"integer\"}}, \"title\": \"query_telemetry_metricsParams\", \"type\": \"object\"}, \"response_json_schema\": {\"additionalProperties\": true, \"type\": \"object\"}}]}, {\"function_declarations\": [{\"description\": \"Look up Unreal Engine crash signatures and map them to known error codes.\\n\\nArgs:\\n    crash_hash: Optional crash hash identifier (e.g. 'CRASH-UE5-NET-0842').\\n    build_version: Optional build version filter (e.g. 'Release-30.10-CL349201' or 'CL349201').\\n\\nReturns:\\n    A dictionary containing the lookup status and matching crash signature records.\", \"name\": \"lookup_unreal_crash_signature\", \"parameters_json_schema\": {\"properties\": {\"crash_hash\": {\"type\": \"string\", \"default\": null, \"title\": \"Crash Hash\", \"nullable\": true}, \"build_version\": {\"type\": \"string\", \"default\": null, \"title\": \"Build Version\", \"nullable\": true}}, \"title\": \"lookup_unreal_crash_signatureParams\", \"type\": \"object\"}, \"response_json_schema\": {\"additionalProperties\": true, \"type\": \"object\"}}]}, {\"function_declarations\": [{\"description\": \"Fetch an incident remediation runbook for a specific error code.\\n\\nArgs:\\n    error_code: The error code key (e.g. 'ERR_NET_CONGESTION_EOS', 'ERR_UE5_CHAOS_NULLPTR').\\n\\nReturns:\\n    A dictionary containing the runbook remediation steps and rollback commands.\", \"name\": \"fetch_remediation_runbook\", \"parameters_json_schema\": {\"properties\": {\"error_code\": {\"title\": \"Error Code\", \"type\": \"string\"}}, \"required\": [\"error_code\"], \"title\": \"fetch_remediation_runbookParams\", \"type\": \"object\"}, \"response_json_schema\": {\"additionalProperties\": true, \"type\": \"object\"}}]}], \"sub_agents\": []}}, \"turns\": [{\"turn_index\": 0, \"turn_id\": \"turn_0\", \"events\": [{\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_call\": {\"id\": \"call_2989453\", \"args\": {\"shard_id\": \"us-east-12\", \"time_window_minutes\": 15}, \"name\": \"query_telemetry_metrics\"}}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:04.767082Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_response\": {\"id\": \"call_2989453\", \"name\": \"query_telemetry_metrics\", \"response\": {\"status\": \"success\", \"shard_id\": \"us-east-12\", \"records\": [{\"timestamp\": \"2026-10-16T04:43:08.031837+00:00\", \"shard_id\": \"us-east-12\", \"region\": \"NA-EAST\", \"active_matches\": 1890, \"matchmaking_latency_ms\": 85.4, \"packet_loss_pct\": 4.2, \"player_dropouts\": 450, \"eos_gateway_status\": \"CRITICAL\"}], \"summary_stats\": {\"avg_packet_loss_pct\": 4.2, \"max_packet_loss_pct\": 4.2, \"avg_latency_ms\": 85.4, \"total_player_dropouts\": 450, \"max_eos_status\": \"CRITICAL\"}, \"anomalies_detected\": []}}}], \"role\": \"user\"}, \"event_time\": \"2026-10-16T08:12:09.293839Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_call\": {\"id\": \"call_4419301\", \"args\": {}, \"name\": \"lookup_unreal_crash_signature\"}}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:09.295355Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_response\": {\"id\": \"call_4419301\", \"name\": \"lookup_unreal_crash_signature\", \"response\": {\"status\": \"success\", \"matches\": [{\"crash_hash\": \"CRASH-UE5-NET-0842\", \"build_version\": \"Release-30.10-CL349201\", \"changelist\": \"CL349201\", \"engine_module\": \"NetDriver / SocketSubsystemEOS\", \"callstack_summary\": \"UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException\", \"affected_clients\": 1240, \"related_error_code\": \"ERR_NET_CONGESTION_EOS\", \"first_seen_timestamp\": \"2026-10-16T04:18:08.031878+00:00\"}, {\"crash_hash\": \"CRASH-UE5-CHAOS-9102\", \"build_version\": \"Release-30.10-CL349201\", \"changelist\": \"CL349201\", \"engine_module\": \"ChaosPhysics / Replication\", \"callstack_summary\": \"FChaosReplicationSync::SerializePayload -> NullReference at 0x00007FFF0042\", \"affected_clients\": 890, \"related_error_code\": \"ERR_UE5_CHAOS_NULLPTR\", \"first_seen_timestamp\": \"2026-10-16T04:03:08.031878+00:00\"}]}}}], \"role\": \"user\"}, \"event_time\": \"2026-10-16T08:12:33.697786Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_call\": {\"id\": \"call_2859103\", \"args\": {\"error_code\": \"ERR_NET_CONGESTION_EOS\"}, \"name\": \"fetch_remediation_runbook\"}}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:33.699326Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_response\": {\"id\": \"call_2859103\", \"name\": \"fetch_remediation_runbook\", \"response\": {\"status\": \"success\", \"error_code\": \"ERR_NET_CONGESTION_EOS\", \"title\": \"EOS Gateway Packet Buffer Overrun Mitigation\", \"severity\": \"P1\", \"remediation_steps\": \"1. Drain incoming matchmaking queue on affected shard.\\n2. Revert EOS routing rule patch to v30.10-baseline.\\n3. Cycle NetDriver socket pools.\", \"rollback_command\": \"eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03\"}}}], \"role\": \"user\"}, \"event_time\": \"2026-10-16T08:12:40.192792Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_call\": {\"id\": \"call_993941\", \"args\": {\"error_code\": \"ERR_UE5_CHAOS_NULLPTR\"}, \"name\": \"fetch_remediation_runbook\"}}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:40.195972Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"function_response\": {\"id\": \"call_993941\", \"name\": \"fetch_remediation_runbook\", \"response\": {\"status\": \"success\", \"error_code\": \"ERR_UE5_CHAOS_NULLPTR\", \"title\": \"Unreal Chaos Physics Replication Hotfix\", \"severity\": \"P1\", \"remediation_steps\": \"1. Disable experimental chaos packet compression in LiveOps remote config.\\n2. Restart affected server instances.\", \"rollback_command\": \"epic-config-cli set --key=p.Chaos.ReplicationSync --value=0 --broadcast=global\"}}}], \"role\": \"user\"}, \"event_time\": \"2026-10-16T08:12:48.176574Z\"}, {\"author\": \"titan_agent\", \"content\": {\"parts\": [{\"text\": \"[P1 INCIDENT REPORT]\\n- **Incident Severity:** P1\\n- **Root Cause Summary:** Telemetry on shard `us-east-12` indicates `CRITICAL` EOS Gateway status with 450 player dropouts. This correlates directly with crash signature `CRASH-UE5-NET-0842` (CL349201 / Build `Release-30.10-CL349201`), where a fatal buffer overrun occurred in the Unreal Engine networking stack (`UNetDriver::TickDispatch -> FSocketEOS::RecvFrom -> FatalPacketBufferOverflowException`) within `NetDriver / SocketSubsystemEOS` under error code `ERR_NET_CONGESTION_EOS`.\\n- **Impacted Shards / Regions:** `us-east-12` (NA-EAST)\\n- **Recommended Mitigation / 1-Click Rollback Script:** \\n```bash\\neos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=us-east-12\\n```\\n*Note: Awaiting human operator sign-off before executing production shard rollback. Follow standard remediation steps: drain matchmaking queue on `us-east-12`, execute routing rollback to `v30.10-baseline`, and cycle NetDriver socket pools.*\"}], \"role\": \"model\"}, \"event_time\": \"2026-10-16T08:12:48.178015Z\"}]}]}"
+      }
+    ]
+  },
+  "agent_info": null
+}

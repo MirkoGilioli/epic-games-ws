@@ -1,0 +1,54 @@
+metrics_to_run:
+  - trajectory_order_metric
+  - incident_report_format_metric
+
+custom_metrics:
+  - name: trajectory_order_metric
+    custom_function: |
+      def evaluate(instance):
+          turns = (instance.get("agent_data") or {}).get("turns", [])
+          tool_calls = []
+          for turn in turns:
+              for event in turn.get("events", []):
+                  parts = (event.get("content") or {}).get("parts", [])
+                  for part in parts:
+                      if "function_call" in part:
+                          fc = part["function_call"]
+                          tool_calls.append(fc.get("name"))
+          
+          # Telemetry must be called before crash diagnostics
+          if "query_telemetry_metrics" in tool_calls:
+              telemetry_idx = tool_calls.index("query_telemetry_metrics")
+              crash_idx = tool_calls.index("lookup_unreal_crash_signature") if "lookup_unreal_crash_signature" in tool_calls else 999
+              if telemetry_idx <= crash_idx:
+                  return {"score": 1.0, "explanation": f"Trajectory passed: telemetry called at index {telemetry_idx}, crash at {crash_idx}. Calls: {tool_calls}"}
+          return {"score": 0.0, "explanation": f"Invalid trajectory order or missing telemetry: {tool_calls}"}
+
+  - name: incident_report_format_metric
+    custom_function: |
+      def evaluate(instance):
+          # Extract text from response or responses
+          text = ""
+          resp = instance.get("response")
+          if resp and isinstance(resp, dict):
+              for part in resp.get("parts", []):
+                  if "text" in part:
+                      text += part["text"] or ""
+          elif not text:
+              for r in instance.get("responses", []):
+                  resp_obj = r.get("response", {})
+                  for part in resp_obj.get("parts", []):
+                      if "text" in part:
+                          text += part["text"] or ""
+              
+          required_headers = [
+              "INCIDENT REPORT",
+              "Incident Severity",
+              "Root Cause Summary",
+              "Impacted Shards",
+              "Recommended Mitigation"
+          ]
+          missing = [h for h in required_headers if h not in text]
+          if not missing:
+              return {"score": 1.0, "explanation": "All incident report format headers present."}
+          return {"score": 0.0, "explanation": f"Missing headers in response: {missing}. Text snippet: {text[:200]}"}

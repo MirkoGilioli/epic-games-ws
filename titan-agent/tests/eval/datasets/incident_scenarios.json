@@ -1,0 +1,46 @@
+{
+  "eval_cases": [
+    {
+      "eval_case_id": "scenario-01-eu-packet-loss",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation."
+          }
+        ]
+      },
+      "reference": {
+        "response": {
+          "role": "model",
+          "parts": [
+            {
+              "text": "[P1 INCIDENT REPORT]\n- Incident Severity: P1\n- Root Cause Summary: EOS Gateway Packet Buffer Overrun / NetDriver buffer overflow (ERR_NET_CONGESTION_EOS)\n- Impacted Shards / Regions: eu-west-03 / EU\n- Recommended Mitigation / 1-Click Rollback Script: eos-admin routing rollback --rule-id=EOS-NET-3010-P2 --shard=eu-west-03"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "eval_case_id": "scenario-02-us-east-crash-loop",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "@Titan-LiveOps Server cluster us-east-12 reported 450 player dropouts in the last 15 minutes. Investigate crash signatures."
+          }
+        ]
+      },
+      "reference": {
+        "response": {
+          "role": "model",
+          "parts": [
+            {
+              "text": "[P1 INCIDENT REPORT]\n- Incident Severity: P1\n- Root Cause Summary: Unreal Engine Chaos Physics Replication NullReference exception (ERR_UE5_CHAOS_NULLPTR)\n- Impacted Shards / Regions: us-east-12 / NA-EAST\n- Recommended Mitigation / 1-Click Rollback Script: epic-config-cli set --key=p.Chaos.ReplicationSync --value=0 --broadcast=global"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

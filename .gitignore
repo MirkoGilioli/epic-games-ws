@@ -7,3 +7,8 @@ dist/
 .venv/
 env/
 venv/
+.pytest_cache/
+.google-agents-cli/
+*.lock.lock
+deployment_metadata.json.lock
+
