@@ -230,12 +230,23 @@ For Gemini Enterprise to invoke the deployed Agent Runtime Reasoning Engine, the
 | **Cloud Run Invoker** | `roles/run.servicesInvoker` | Communicates over Cloud Run A2A endpoints (if applicable). |
 
 #### Seed Telemetry & Incident Data
-Populate the BigQuery telemetry datasets (use `--live` for real BigQuery tables, or omit for local mock JSON files):
+To seed data into live BigQuery tables (`--live`), ensure the BigQuery client library is installed. Use `uv` to create and activate a local virtual environment:
+
 ```bash
-# Live BigQuery dataset seeding (requires GCP credentials):
+# 1. Create and activate a local virtual environment with uv
+uv venv .venv
+source .venv/bin/activate
+
+# 2. Install the BigQuery client library
+uv pip install google-cloud-bigquery
+
+# 3. Seed the live BigQuery dataset (requires GCP credentials & GCP_PROJECT set):
 python3 scripts/seed_bigquery_telemetry.py --live
 
-# Or local offline mock data:
+# Alternatively, run directly with uv without activating the environment:
+# uv run --with google-cloud-bigquery python3 scripts/seed_bigquery_telemetry.py --live
+
+# Or generate local offline mock JSON files (no GCP credentials or BigQuery package needed):
 python3 scripts/seed_bigquery_telemetry.py
 ```
 
