@@ -12,15 +12,15 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ 00:00 - 00:15 (15m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
-│ 00:15 - 00:30 (15m) │ Phase 1: Environment Setup & Prototype Creation       │
+│ 00:00 - 00:30 (30m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
+│ 00:30 - 00:45 (15m) │ Phase 1: Environment Setup & Prototype Creation       │
 │                     │         (agents-cli create & install)                 │
-│ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity   │
+│ 00:45 - 01:45 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity   │
 │                     │         (Plan Review, Subagents, Tests & Eval)        │
-│ 01:30 - 01:40 (10m) │ ☕ Bio Break & Lightning Q&A                         │
-│ 01:40 - 02:05 (25m) │ Phase 3: Cloud Deployment to Agent Runtime            │
-│ 02:05 - 02:40 (35m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
-│ 02:40 - 03:00 (20m) │ Phase 5: War Game Challenge & Wrap-up                 │
+│ 01:45 - 02:00 (15m) │ ☕ Bio Break & Lightning Q&A                           │
+│ 02:00 - 02:30 (30m) │ Phase 3: Cloud Deployment to Agent Runtime            │
+│ 02:30 - 02:45 (15m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
+│ 02:45 - 03:00 (15m) │ Phase 5: War Game Challenge & Wrap-up                 │
 │─────────────────────────────────────────────────────────────────────────────│
 ```
 
