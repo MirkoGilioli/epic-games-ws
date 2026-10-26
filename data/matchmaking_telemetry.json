@@ -1,5 +1,15 @@
 [
   {
+    "timestamp": "2026-10-24T22:45:12.833939+00:00",
+    "shard_id": "us-east-12",
+    "region": "NA-EAST",
+    "active_matches": 2450,
+    "matchmaking_latency_ms": 420.0,
+    "packet_loss_pct": 18.5,
+    "player_dropouts": 320,
+    "eos_gateway_status": "CRITICAL"
+  },
+  {
     "timestamp": "2026-10-16T04:43:08.031837+00:00",
     "shard_id": "eu-west-01",
     "region": "EU",

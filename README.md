@@ -1,5 +1,7 @@
 # 🎮 Operation Zero Downtime: Spec-Driven Agent Engineering with Antigravity 2.0 & Google Agents CLI
 
+![Titan: AI LiveOps Incident Triage Agent](assets/titan_liveops_agent.png)
+
 Welcome to the hands-on technical workshop built for **Epic Games Reliability & Platform Engineers**.
 
 In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, evaluate, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)**, **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Runtime)**.
@@ -10,15 +12,15 @@ In this 3-hour immersive session, you will step into the role of Core Reliabilit
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ 00:00 - 00:15 (15m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
-│ 00:15 - 00:30 (15m) │ Phase 1: Environment Setup & Prototype Creation       │
+│ 00:00 - 00:30 (30m) │ Welcome, Mission Briefing & LiveOps Problem Statement │
+│ 00:30 - 00:45 (15m) │ Phase 1: Environment Setup & Prototype Creation       │
 │                     │         (agents-cli create & install)                 │
-│ 00:30 - 01:30 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity   │
+│ 00:45 - 01:45 (60m) │ Phase 2: Hands-on Lab: Build Titan with Antigravity   │
 │                     │         (Plan Review, Subagents, Tests & Eval)        │
-│ 01:30 - 01:40 (10m) │ ☕ Bio Break & Lightning Q&A                         │
-│ 01:40 - 02:05 (25m) │ Phase 3: Cloud Deployment to Agent Runtime            │
-│ 02:05 - 02:40 (35m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
-│ 02:40 - 03:00 (20m) │ Phase 5: War Game Challenge & Wrap-up                 │
+│ 01:45 - 02:00 (15m) │ ☕ Bio Break & Lightning Q&A                           │
+│ 02:00 - 02:30 (30m) │ Phase 3: Cloud Deployment to Agent Runtime            │
+│ 02:30 - 02:45 (15m) │ Phase 4: Gemini Enterprise Publishing & Interaction   │
+│ 02:45 - 03:00 (15m) │ Phase 5: War Game Challenge & Wrap-up                 │
 │─────────────────────────────────────────────────────────────────────────────│
 ```
 
@@ -76,9 +78,12 @@ flowchart TD
 │   │   └── epic_engineering_rules.md            # Epic coding & safety rules
 │   └── skills/
 │       └── liveops-triage/                      # Epic Games Fortnite & NetDriver triage skill
+├── assets/
+│   └── titan_liveops_agent.png                  # Presentation hero graphic
 ├── data/                                        # Mock fallback telemetry & crash DB
-├── mcp_servers/
-│   └── bigquery_mcp.json                        # BigQuery MCP server config
+├── scripts/
+│   ├── seed_bigquery_telemetry.py               # BigQuery & local mock seeder
+│   └── simulate_incident.py                     # War game incident injector
 ├── specs/
 │   ├── incident_scenarios.yaml                  # Incident test cases (EU-West / US-East)
 │   └── titan_agent_spec.yaml                    # SDD Contract (ADK Agent & Tool Schemas)
@@ -228,12 +233,23 @@ For Gemini Enterprise to invoke the deployed Agent Runtime Reasoning Engine, the
 | **Cloud Run Invoker** | `roles/run.servicesInvoker` | Communicates over Cloud Run A2A endpoints (if applicable). |
 
 #### Seed Telemetry & Incident Data
-Populate the BigQuery telemetry datasets (use `--live` for real BigQuery tables, or omit for local mock JSON files):
+To seed data into live BigQuery tables (`--live`), ensure the BigQuery client library is installed. Use `uv` to create and activate a local virtual environment:
+
 ```bash
-# Live BigQuery dataset seeding (requires GCP credentials):
+# 1. Create and activate a local virtual environment with uv
+uv venv .venv
+source .venv/bin/activate
+
+# 2. Install the BigQuery client library
+uv pip install google-cloud-bigquery
+
+# 3. Seed the live BigQuery dataset (requires GCP credentials & GCP_PROJECT set):
 python3 scripts/seed_bigquery_telemetry.py --live
 
-# Or local offline mock data:
+# Alternatively, run directly with uv without activating the environment:
+# uv run --with google-cloud-bigquery python3 scripts/seed_bigquery_telemetry.py --live
+
+# Or generate local offline mock JSON files (no GCP credentials or BigQuery package needed):
 python3 scripts/seed_bigquery_telemetry.py
 ```
 
@@ -360,6 +376,9 @@ Once Antigravity completes the build, test Titan in the terminal:
 ---
 
 ### 🕒 Phase 4: Gemini Enterprise Integration & Publishing (02:05 – 02:40)
+
+> [!NOTE]
+> **Prerequisite:** A Gemini Enterprise App (or Search & Conversation App in Discovery Engine) must be created in your GCP project beforehand. `agents-cli publish gemini` registers the ADK agent into an existing Gemini Enterprise instance—it does not create or provision the Gemini Enterprise application itself.
 
 1. **Publish the Agent:**
    Prompt Antigravity:
