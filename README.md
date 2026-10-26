@@ -295,7 +295,7 @@ Read the spec contract in `../specs/titan_agent_spec.yaml`.
 Create a comprehensive Implementation Plan artifact for developing the Titan LiveOps Agent inside this `titan_agent` project using Google ADK with Gemini 3.7 Flash.
 Plan for:
 - Main Agent: Implements the ADK agent core (`app/agent.py`) and agent evaluation suite (`eval/`).
-- Subagent 1 (Parallel): Implements the telemetry tool (`app/tools/telemetry_tool.py`) with BigQuery MCP integration and unit tests (`tests/test_telemetry_tool.py`).
+- Subagent 1 (Parallel): Implements the telemetry tool (`app/tools/telemetry_tool.py`) with BigQuery integration and unit tests (`tests/test_telemetry_tool.py`).
 - Subagent 2 (Parallel): Implements the crash diagnostics tool (`app/tools/crash_diagnostics.py`) with Unreal Engine symbol parsing and unit tests (`tests/test_crash_diagnostics.py`).
 
 Do NOT write code or create files yet. Outline the architecture, tool contracts, test plan, and subagent delegation strategy, then stop and wait for my review and feedback.
@@ -308,7 +308,7 @@ When Antigravity generates the **Implementation Plan artifact** (`implementation
 
 ##### 💡 Example Comments to Add on the Artifact:
 * **On the Telemetry Tool Section:**
-  > *"Ensure we flag shard packet loss > 5% as WARNING and > 10% as CRITICAL anomalies via BigQuery MCP, and include unit tests in `tests/test_telemetry_tool.py`."*
+  > *"Ensure we flag shard packet loss > 5% as WARNING and > 10% as CRITICAL anomalies via BigQuery, and include unit tests in `tests/test_telemetry_tool.py`."*
 * **On the Crash Diagnostics Section:**
   > *"Make sure the crash parser extracts engine build changelist CL349201, maps NetDriver buffer overflow crashes directly to runbook `ERR_NET_CONGESTION_EOS`, and includes unit tests in `tests/test_crash_diagnostics.py`."*
 * **On Evaluation & Testing (Main Agent):**
@@ -327,7 +327,7 @@ Review the implementation plan according to my comments and proceed with buildin
 ```
 
 ##### ⚡ What Happens Next in Antigravity:
-1. **Subagent 1 (`telemetry-tool-builder`):** Codes and verifies `app/tools/telemetry_tool.py` with BigQuery MCP and writes `tests/test_telemetry_tool.py`.
+1. **Subagent 1 (`telemetry-tool-builder`):** Codes and verifies `app/tools/telemetry_tool.py` with BigQuery and writes `tests/test_telemetry_tool.py`.
 2. **Subagent 2 (`crash-diagnostics-builder`):** Codes and verifies `app/tools/crash_diagnostics.py` with Unreal Engine NetDriver signatures and writes `tests/test_crash_diagnostics.py`.
 3. **Primary Agent:** Assembles `app/agent.py` with Google ADK, builds the evaluation dataset (`eval/evalset.jsonl`), and verifies the complete agent flow.
 
@@ -343,7 +343,7 @@ Once Antigravity completes the build, test Titan in the terminal:
 
 2. **Verify the Agent Output:**
    * ✅ **Agent Reasoning:** Gemini 3.7 Flash boots with the system instruction from `specs/titan_agent_spec.yaml`.
-   * ✅ **Tool Invocations:** Titan calls `query_telemetry_metrics` (BigQuery MCP) to identify the EU-West anomaly and `lookup_unreal_crash_signature` for NetDriver buffer overflow.
+   * ✅ **Tool Invocations:** Titan calls `query_telemetry_metrics` (BigQuery) to identify the EU-West anomaly and `lookup_unreal_crash_signature` for NetDriver buffer overflow.
    * ✅ **Structured Incident Report:** Titan returns a `[P1 INCIDENT REPORT]` with affected shards, root cause, and the 1-click rollback command:
      ```bash
      eos-admin routing rollback --rule-id=EOS-NET-3010-P2
@@ -393,7 +393,7 @@ Once Antigravity completes the build, test Titan in the terminal:
 2. **Live Incident Interaction in Gemini Enterprise Chat:**
    * In Gemini Enterprise chat, mention `@Titan-LiveOps`:
    > *"@Titan-LiveOps Shard EU-West-03 is showing 14% packet loss and matchmaking timeouts following the 30.10 update. Run an incident diagnosis and provide mitigation."*
-   * Titan autonomously queries BigQuery via MCP, correlates the Unreal NetDriver buffer overflow, and returns a 1-click rollback command (`eos-admin routing rollback --rule-id=EOS-NET-3010-P2`).
+   * Titan autonomously queries BigQuery, correlates the Unreal NetDriver buffer overflow, and returns a 1-click rollback command (`eos-admin routing rollback --rule-id=EOS-NET-3010-P2`).
 
 ---
 
