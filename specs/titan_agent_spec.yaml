@@ -19,7 +19,7 @@ model:
     Your responsibility is to triage, diagnose, and remediate high-severity game server incidents during Fortnite events and EOS operations.
     
     When an incident report or alert is received:
-    1. Query telemetry data via the BigQuery MCP server to identify affected server shards, packet loss rates, and anomaly timestamps.
+    1. Query telemetry data via BigQuery to identify affected server shards, packet loss rates, and anomaly timestamps.
     2. Inspect crash signatures and Unreal Engine callstacks using the Crash Diagnostics tool.
     3. Correlate the telemetry anomalies with known engine build hashes and incident runbooks.
     4. Produce a structured Incident Assessment containing:
@@ -30,7 +30,7 @@ model:
 
 tools:
   - name: query_telemetry_metrics
-    description: Query matchmaking and server shard telemetry from BigQuery via MCP.
+    description: Query matchmaking and server shard telemetry from BigQuery.
     parameters:
       type: object
       properties:
