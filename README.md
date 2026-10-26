@@ -6,6 +6,9 @@ Welcome to the hands-on technical workshop built for **Epic Games Reliability & 
 
 In this 3-hour immersive session, you will step into the role of Core Reliability Engineers during a high-stakes *Fortnite Chapter Launch Event*. You will build, evaluate, deploy, and publish **Titan** — an Autonomous LiveOps Incident Agent powered by **Antigravity 2.0**, **Google Agent Development Kit (ADK)**, **Gemini 3.7 Flash**, and **Google Cloud Agent Platform (Agent Runtime)**.
 
+> [!TIP]
+> 📊 **Presentation Slides:** Download or view the full workshop deck: [`assets/epic_games_workshop_deck.pdf`](assets/epic_games_workshop_deck.pdf).
+
 ---
 
 ## ⏱️ 3-Hour Workshop Schedule
@@ -79,6 +82,7 @@ flowchart TD
 │   └── skills/
 │       └── liveops-triage/                      # Epic Games Fortnite & NetDriver triage skill
 ├── assets/
+│   ├── epic_games_workshop_deck.pdf             # Workshop Presentation Slides (PDF)
 │   └── titan_liveops_agent.png                  # Presentation hero graphic
 ├── data/                                        # Mock fallback telemetry & crash DB
 ├── scripts/
