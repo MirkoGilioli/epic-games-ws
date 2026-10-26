@@ -79,8 +79,6 @@ flowchart TD
 │   └── skills/
 │       └── liveops-triage/                      # Epic Games Fortnite & NetDriver triage skill
 ├── data/                                        # Mock fallback telemetry & crash DB
-├── mcp_servers/
-│   └── bigquery_mcp.json                        # BigQuery MCP server config
 ├── specs/
 │   ├── incident_scenarios.yaml                  # Incident test cases (EU-West / US-East)
 │   └── titan_agent_spec.yaml                    # SDD Contract (ADK Agent & Tool Schemas)
