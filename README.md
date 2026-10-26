@@ -78,7 +78,12 @@ flowchart TD
 │   │   └── epic_engineering_rules.md            # Epic coding & safety rules
 │   └── skills/
 │       └── liveops-triage/                      # Epic Games Fortnite & NetDriver triage skill
+├── assets/
+│   └── titan_liveops_agent.png                  # Presentation hero graphic
 ├── data/                                        # Mock fallback telemetry & crash DB
+├── scripts/
+│   ├── seed_bigquery_telemetry.py               # BigQuery & local mock seeder
+│   └── simulate_incident.py                     # War game incident injector
 ├── specs/
 │   ├── incident_scenarios.yaml                  # Incident test cases (EU-West / US-East)
 │   └── titan_agent_spec.yaml                    # SDD Contract (ADK Agent & Tool Schemas)
